@@ -1,0 +1,221 @@
+﻿@model IEnumerable<Club>
+@{
+    ViewData["Title"] = "Home";
+}
+
+
+<!-- Hero Section -->
+<div class="hero-section text-white">
+    <div class="container py-5">
+        <div class="row align-items-center py-4">
+            <div class="col-lg-7">
+                <p class="text-info fw-bold text-uppercase mb-3">
+                    Welcome to Football
+                </p>
+
+                <h1 class="display-3 fw-bold mb-3">
+                    Discover the World
+                    <br />
+                    of <span class="text-primary">Football</span>
+                </h1>
+
+                <p class="fs-5 text-light mb-4">
+                    Explore the best clubs, players, and leagues from around the world.
+                    Stay updated with your favorite teams and football stars.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Clubs"
+                       asp-action="Index"
+                       class="btn btn-primary btn-lg px-4">
+                        Explore Clubs →
+                    </a>
+
+                    <a asp-controller="Players"
+                       asp-action="Index"
+                       class="btn btn-outline-light btn-lg px-4">
+                        View Players →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+
+    <!-- Popular Clubs Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <h2 class="fw-bold mb-0">
+            <span class="text-primary">★</span> Popular Clubs
+        </h2>
+
+        <a asp-controller="Clubs"
+           asp-action="Index"
+           class="text-primary text-decoration-none fw-semibold">
+            View All Clubs →
+        </a>
+    </div>
+
+    <p class="text-secondary mb-4">
+        Discover some of the most famous clubs in the world.
+    </p>
+
+    <!-- Clubs Cards -->
+    <div class="row g-4">
+        @{
+            int count = 0;
+        }
+        @foreach(var club in Model){
+            if(count==5)
+            {
+                break;
+            }
+            <div class="col-12 col-sm-6 col-lg">
+            <div class="card club-card h-100 shadow-sm border-0">
+                
+
+                <div class="card-body d-flex flex-column">
+                        <h5 class="fw-bold">@club.Name</h5>
+                        <p class="text-secondary mb-3">@club.league</p>
+
+                    <a asp-controller="Clubs"
+                       asp-action="Details"
+                       asp-route-Id=@club.Id"
+                       class="btn btn-light text-primary mt-auto">
+                        View Club →
+                    </a>
+                </div>
+            </div>
+        </div>
+            count++;
+
+        }
+    </div>
+
+    <!-- Features Section -->
+    <div class="row g-4 mt-4 mb-3">
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="feature-box d-flex align-items-center gap-3 p-3 rounded-3 h-100">
+                <div class="feature-icon">⚽</div>
+                <div>
+                    <h6 class="fw-bold mb-1">Top Clubs</h6>
+                    <p class="text-secondary small mb-0">
+                        Explore famous football clubs.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="feature-box d-flex align-items-center gap-3 p-3 rounded-3 h-100">
+                <div class="feature-icon">👤</div>
+                <div>
+                    <h6 class="fw-bold mb-1">Star Players</h6>
+                    <p class="text-secondary small mb-0">
+                        Discover your favorite players.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="feature-box d-flex align-items-center gap-3 p-3 rounded-3 h-100">
+                <div class="feature-icon">🏆</div>
+                <div>
+                    <h6 class="fw-bold mb-1">Leagues</h6>
+                    <p class="text-secondary small mb-0">
+                        Discover football leagues.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="feature-box d-flex align-items-center gap-3 p-3 rounded-3 h-100">
+                <div class="feature-icon">⭐</div>
+                <div>
+                    <h6 class="fw-bold mb-1">Stay Updated</h6>
+                    <p class="text-secondary small mb-0">
+                        Keep exploring the football world.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(90deg, rgba(3, 16, 35, .96), rgba(3, 30, 65, .65)), url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=2000&q=85") center/cover no-repeat;
+        min-height: 390px;
+    }
+
+        .hero-section .text-primary {
+            color: #0d8bff !important;
+        }
+
+    .club-card {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5edf7 !important;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .club-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 40, 90, .12) !important;
+        }
+
+    .club-logo {
+        width: 100%;
+        height: 145px;
+        object-fit: contain;
+        padding: 25px;
+        background: #f1f6fc;
+    }
+
+    .club-card .btn-light {
+        background: #eaf3ff;
+        border: none;
+    }
+
+        .club-card .btn-light:hover {
+            background: #d7e8ff;
+        }
+
+    .feature-box {
+        background: #f0f6fd;
+    }
+
+    .feature-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #0d6efd;
+        color: white;
+        font-size: 23px;
+    }
+
+    @@media (max-width: 576px) {
+        .hero-section {
+            min-height: auto;
+        }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-section .py-4 {
+                padding-top: 1rem !important;
+                padding-bottom: 1rem !important;
+            }
+    }
+</style>

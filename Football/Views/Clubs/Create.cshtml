@@ -1,0 +1,55 @@
+﻿
+@model Club;
+
+<form method="post">
+
+    @* <div asp-validation-summary="All"></div> *@
+
+
+
+    <div class="border p-3 mt-4">
+
+        <div>
+            <h2>
+                Add Club
+            </h2>
+        </div>
+       <hr>
+
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+
+        </div>
+        <div class="mb-3">
+            <label asp-for="league" class="form-label">League</label>
+
+            <select asp-for="league" class="form-select">
+                <option value="">-- Select League --</option>
+                <option value="Premier League">Premier League</option>
+                <option value="La Liga">La Liga 🇪🇸</option>
+                <option value="Serie A">Serie A 🇮🇹</option>
+                <option value="Bundesliga">Bundesliga 🇩🇪</option>
+                <option value="Ligue 1">Ligue 1 🇫🇷</option>
+            </select>
+
+            <span asp-validation-for="league" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CreatedOn"></label>
+            <input asp-for="CreatedOn" class="form-control" />
+            <span asp-validation-for="CreatedOn" class="text-danger"></span>
+
+        </div>
+    
+
+        <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+        <a asp-action="Index" asp-controller="Clubs" class="btn btn-primary" style="width:150px">Back To Clubs</a>
+
+    </div>
+</form>
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

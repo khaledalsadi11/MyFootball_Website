@@ -1,0 +1,149 @@
+﻿@model Club
+
+@{
+    ViewData["Title"] = $"{Model.Name} Players";
+}
+
+<div class="container py-4">
+
+    <!-- Club Header -->
+    <div class="club-header rounded-3 mb-4 text-white">
+        <div class="d-flex align-items-center gap-4 p-4">
+            @* <img src=""
+                 alt="Club Logo"
+                 class="club-logo" /> *@
+
+            <div>
+                <h1 class="fw-bold mb-2">@Model.Name</h1>
+                <p class="mb-0 fs-5">
+                    🏆 @Model.league
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Players Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Players</h2>
+            <p class="text-secondary mb-0">
+                Meet the players of @Model.Name and their nationalities.
+            </p>
+        </div>
+
+        <span class="badge bg-primary rounded-pill fs-6 px-3 py-2">
+            Total: @(Model.Players?.Count ?? 0)
+        </span>
+    </div>
+
+    <hr class="text-primary opacity-25 mb-4" />
+
+    <!-- Players Cards -->
+    <div class="row g-3">
+
+        @foreach (var player in Model.Players)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <div class="card player-card h-100">
+                    <div class="card-body d-flex align-items-center gap-3 p-3">
+
+                        <div class="player-number d-flex align-items-center justify-content-center rounded-3">
+                            <span class="fw-bold fs-3">
+                                @player.ShirtNumber
+                            </span>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <h5 class="fw-bold mb-2">
+                                @player.Name
+                            </h5>
+
+                            <p class="text-secondary mb-0">
+                                @player.Position
+                            </p>
+
+                            <div class="mt-2">
+                                <span class="text-secondary small me-2">
+                                    Nationality
+                                </span>
+
+                                <span class="badge bg-light text-dark border">
+                                    @(player.Nationality?.Country ?? "Unknown")
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+    <!-- Footer -->
+    <div class="d-flex align-items-center gap-3 mt-5 mb-3">
+        <hr class="flex-grow-1 text-primary opacity-25" />
+
+        <span class="text-secondary text-nowrap">
+            Total Players: @(Model.Players?.Count ?? 0)
+        </span>
+
+        <hr class="flex-grow-1 text-primary opacity-25" />
+    </div>
+
+</div>
+
+<style>
+    .club-header {
+        background: linear-gradient(110deg, #172f50, #0d294b);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .club-logo {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        background-color: white;
+        border-radius: 50%;
+        padding: 5px;
+        flex-shrink: 0;
+    }
+
+    .player-card {
+        border: 1px solid #e2eaf3;
+        border-radius: 14px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(20, 50, 90, 0.03);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .player-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(20, 50, 90, 0.10);
+        }
+
+    .player-number {
+        width: 65px;
+        height: 65px;
+        flex-shrink: 0;
+        background-color: #dceaff;
+        color: #0d6efd;
+    }
+
+    @@media (max-width: 576px) {
+        .club-logo {
+            width: 70px;
+            height: 70px;
+        }
+
+        .club-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .club-header .p-4 {
+            padding: 1rem !important;
+        }
+    }
+</style>
