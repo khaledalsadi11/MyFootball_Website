@@ -22,6 +22,7 @@ namespace Football.Data
         public DbSet<Coach> Coaches { get; set; }
 
         public DbSet<Nationality> Nationalities { get; set; }
+        public DbSet<League> Leagues { get; set; }
 
     }
 }

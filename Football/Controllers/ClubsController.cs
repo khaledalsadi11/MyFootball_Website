@@ -2,6 +2,7 @@
 using Football.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Football.Controllers
@@ -13,15 +14,30 @@ namespace Football.Controllers
         {
             _context = context;
         }
+
+
+        public void CreateClubList(int selected= 1)
+        {
+            List<League> leagues = _context.Leagues.ToList();
+            SelectList leaugelist = new SelectList(leagues, "Id","LeagueName",selected);
+
+            ViewBag.LeagueList = leaugelist;
+        }
+
+
         public IActionResult Index()
         {
-            IEnumerable<Club> clubs = _context.Clubs.ToList();
+            IEnumerable<Club> clubs = _context.Clubs
+                .Include(c => c.League)
+                .ToList();
+
             return View(clubs);
         }
 
         //Get 
         public IActionResult Create()
         {
+            CreateClubList();
             return View();
         }
         //post
@@ -37,11 +53,15 @@ namespace Football.Controllers
 
             if (!ModelState.IsValid)
             {
+                CreateClubList(club.LeagueId);
+
                 return View(club);
+                
             }
-                _context.Clubs.Add(club);
-                _context.SaveChanges();
-                TempData["s"] = "Club Added Succesfully";
+            _context.Clubs.Add(club);
+            _context.SaveChanges();
+
+            TempData["s"] = "Club Added Succesfully";
                 return RedirectToAction("Index");
 
             }
@@ -51,7 +71,8 @@ namespace Football.Controllers
     //Get 
         public IActionResult Edit(int? id)
         {
-            if(id==null || id == 0) 
+
+            if (id==null || id == 0) 
             {
                 return NotFound();
             }
@@ -61,6 +82,8 @@ namespace Football.Controllers
             {
                 return NotFound();
             }
+            CreateClubList(club.LeagueId);
+
             return View(club);
         }
         //post
@@ -97,6 +120,8 @@ namespace Football.Controllers
             {
                 return NotFound();
             }
+            CreateClubList(club.LeagueId);
+
             return View(club);
         }
         //post
@@ -125,11 +150,12 @@ namespace Football.Controllers
                 return NotFound();
             }
 
-            var club = _context.Clubs.Include(x=>x.Players).ThenInclude(x=>x.Nationality).SingleOrDefault(c=>c.Id == id);
+            var club = _context.Clubs.Include(x=>x.Players).ThenInclude(x=>x.Nationality).Include(x=>x.League).SingleOrDefault(c=>c.Id == id);
             if (club == null)
             {
                 return NotFound();
             }
+
             return View(club);
         }
 

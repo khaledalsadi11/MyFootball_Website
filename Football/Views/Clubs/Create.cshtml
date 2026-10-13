@@ -23,18 +23,14 @@
 
         </div>
         <div class="mb-3">
-            <label asp-for="league" class="form-label">League</label>
+            <label asp-for="LeagueId" class="form-label">League</label>
 
-            <select asp-for="league" class="form-select">
-                <option value="">-- Select League --</option>
-                <option value="Premier League">Premier League</option>
-                <option value="La Liga">La Liga 🇪🇸</option>
-                <option value="Serie A">Serie A 🇮🇹</option>
-                <option value="Bundesliga">Bundesliga 🇩🇪</option>
-                <option value="Ligue 1">Ligue 1 🇫🇷</option>
-            </select>
+            <select asp-for="LeagueId" class="form-select" asp-items="ViewBag.LeagueList"></select>
+               
+           
 
-            <span asp-validation-for="league" class="text-danger"></span>
+
+            <span asp-validation-for="LeagueId" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="CreatedOn"></label>

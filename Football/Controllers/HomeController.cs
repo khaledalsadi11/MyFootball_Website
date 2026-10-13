@@ -1,6 +1,7 @@
 using Football.Data;
 using Football.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Football.Controllers
@@ -14,7 +15,7 @@ namespace Football.Controllers
         }
         public IActionResult Index()
         {
-           IEnumerable<Club> HomeClubs =_context.Clubs.ToList();
+           IEnumerable<Club> HomeClubs =_context.Clubs.Include(x=>x.League).ToList();
 
             return View(HomeClubs);
         }

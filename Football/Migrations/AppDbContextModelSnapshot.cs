@@ -22,7 +22,7 @@ namespace Football.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("New_EF.Models.Club", b =>
+            modelBuilder.Entity("Football.Models.Club", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,23 +33,24 @@ namespace Football.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("league")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("LeagueId");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Clubs");
+                    b.ToTable("Clubs", (string)null);
                 });
 
-            modelBuilder.Entity("New_EF.Models.Coach", b =>
+            modelBuilder.Entity("Football.Models.Coach", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,10 +78,27 @@ namespace Football.Migrations
 
                     b.HasIndex("NationalityId");
 
-                    b.ToTable("Coaches");
+                    b.ToTable("Coaches", (string)null);
                 });
 
-            modelBuilder.Entity("New_EF.Models.Nationality", b =>
+            modelBuilder.Entity("Football.Models.League", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LeagueName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Leagues", (string)null);
+                });
+
+            modelBuilder.Entity("Football.Models.Nationality", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,10 +112,10 @@ namespace Football.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Nationalities");
+                    b.ToTable("Nationalities", (string)null);
                 });
 
-            modelBuilder.Entity("New_EF.Models.Player", b =>
+            modelBuilder.Entity("Football.Models.Player", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,18 +147,29 @@ namespace Football.Migrations
 
                     b.HasIndex("NationalityId");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
                 });
 
-            modelBuilder.Entity("New_EF.Models.Coach", b =>
+            modelBuilder.Entity("Football.Models.Club", b =>
                 {
-                    b.HasOne("New_EF.Models.Club", "Club")
-                        .WithOne("Coach")
-                        .HasForeignKey("New_EF.Models.Coach", "ClubId")
+                    b.HasOne("Football.Models.League", "League")
+                        .WithMany()
+                        .HasForeignKey("LeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("New_EF.Models.Nationality", "Nationality")
+                    b.Navigation("League");
+                });
+
+            modelBuilder.Entity("Football.Models.Coach", b =>
+                {
+                    b.HasOne("Football.Models.Club", "Club")
+                        .WithOne("Coach")
+                        .HasForeignKey("Football.Models.Coach", "ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Football.Models.Nationality", "Nationality")
                         .WithMany("Coaches")
                         .HasForeignKey("NationalityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -151,15 +180,15 @@ namespace Football.Migrations
                     b.Navigation("Nationality");
                 });
 
-            modelBuilder.Entity("New_EF.Models.Player", b =>
+            modelBuilder.Entity("Football.Models.Player", b =>
                 {
-                    b.HasOne("New_EF.Models.Club", "Club")
+                    b.HasOne("Football.Models.Club", "Club")
                         .WithMany("Players")
                         .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("New_EF.Models.Nationality", "Nationality")
+                    b.HasOne("Football.Models.Nationality", "Nationality")
                         .WithMany("Players")
                         .HasForeignKey("NationalityId");
 
@@ -168,15 +197,14 @@ namespace Football.Migrations
                     b.Navigation("Nationality");
                 });
 
-            modelBuilder.Entity("New_EF.Models.Club", b =>
+            modelBuilder.Entity("Football.Models.Club", b =>
                 {
-                    b.Navigation("Coach")
-                        .IsRequired();
+                    b.Navigation("Coach");
 
                     b.Navigation("Players");
                 });
 
-            modelBuilder.Entity("New_EF.Models.Nationality", b =>
+            modelBuilder.Entity("Football.Models.Nationality", b =>
                 {
                     b.Navigation("Coaches");
 
