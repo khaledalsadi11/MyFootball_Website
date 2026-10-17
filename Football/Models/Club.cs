@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Football.Models
 {
@@ -11,18 +8,22 @@ namespace Football.Models
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Club name is required")]
+        [StringLength(
+            100,
+            MinimumLength = 3,
+            ErrorMessage = "Club name must be between 3 and 100 characters")]
         public string Name { get; set; } = string.Empty;
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
-        public Coach? Coach { get; set; }
+        public ICollection<Coach> Coaches { get; set; }
+            = new List<Coach>();
 
         public ICollection<Player> Players { get; set; }
             = new List<Player>();
 
-        [Required]
-        public int LeagueId { get; set; }//fk
-        
-        public League ? League { get; set; } 
+        public ICollection<Team> Teams { get; set; }
+            = new List<Team>();
     }
 }

@@ -1,31 +1,409 @@
+
+/* ========== GLOBAL ========== */
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f5f7fb;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+main {
+    flex: 1;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 .1rem white, 0 0 0 .25rem #258cfb;
+}
+
+/* ========== NAVBAR ========== */
+
+.football-navbar {
+    background: linear-gradient(110deg, #071a34, #123b68);
+}
+
+.football-logo,
+.football-logo:hover {
+    color: #fff;
+    letter-spacing: .4px;
+}
+
+    .football-logo i {
+        color: #55b2ff;
+    }
+
+.football-navbar .nav-link {
+    color: #c6d5e8;
+    border-radius: .6rem;
+    font-weight: 500;
+    transition: all .2s ease;
+}
+
+    .football-navbar .nav-link:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, .09);
+    }
+
+    .football-navbar .nav-link.active {
+        color: #fff;
+        background: rgba(48, 139, 245, .25);
+    }
+
+/* ========== DROPDOWN ========== */
+
+.football-navbar .dropdown-menu {
+    min-width: 245px;
+    padding: 10px;
+    border: none;
+    border-radius: 14px;
+    margin-top: 12px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .15);
+}
+
+.football-navbar .dropdown-item {
+    padding: 11px 14px;
+    border-radius: 9px;
+    font-weight: 500;
+    color: #334155;
+    transition: all .2s ease;
+}
+
+    .football-navbar .dropdown-item:hover,
+    .football-navbar .dropdown-item:focus,
+    .football-navbar .dropdown-item.active {
+        background: #eef5ff;
+        color: #123b68;
+    }
+
+    .football-navbar .dropdown-item i {
+        font-size: 17px;
+    }
+
+.dropdown-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    padding: 8px 14px;
+    text-transform: uppercase;
+}
+
+/* ========== SEARCH ========== */
+
+.football-search {
+    max-width: 310px;
+}
+
+    .football-search .form-control {
+        border-radius: .65rem 0 0 .65rem;
+        padding: 10px 14px;
+    }
+
+        .football-search .form-control:focus {
+            box-shadow: none;
+        }
+
+    .football-search .btn {
+        border-radius: 0 .65rem .65rem 0;
+    }
+
+/* ========== CLUBS PAGE ========== */
+
+.clubs-page {
+    background: linear-gradient(135deg, #f8fbff, #edf5ff);
+    min-height: 100%;
+}
+
+.section-label {
+    color: #3274bd;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+    .section-label i {
+        font-size: 8px;
+        vertical-align: middle;
+    }
+
+.add-club-btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(13, 110, 253, .2);
+}
+
+/* ========== STATISTICS ========== */
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #e5edf5;
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 5px 20px rgba(20, 50, 90, .04);
+    height: 100%;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    flex-shrink: 0;
+}
+
+.stat-blue {
+    background: #e4f3ff;
+    color: #008dff;
+}
+
+.stat-green {
+    background: #dffbea;
+    color: #0abf61;
+}
+
+.stat-orange {
+    background: #fff3d8;
+    color: #f5a400;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.stat-number {
+    font-size: 30px;
+    font-weight: 800;
+    color: #0d2340;
+}
+
+/* ========== CLUBS CARD ========== */
+
+.clubs-table-card {
+    background: #fff;
+    padding: 22px;
+    border-radius: 15px;
+    border: 1px solid #e5edf5;
+    box-shadow: 0 5px 20px rgba(20, 50, 90, .05);
+}
+
+    .clubs-table-card .form-control,
+    .clubs-table-card .form-select,
+    .clubs-table-card .input-group-text {
+        border-color: #d7e1ed;
+        min-height: 44px;
+    }
+
+        .clubs-table-card .form-control:focus,
+        .clubs-table-card .form-select:focus {
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, .1);
+            border-color: #80b5ff;
+        }
+
+/* ========== CLUBS TABLE ========== */
+
+.clubs-table {
+    border: 1px solid #edf0f5;
+}
+
+    .clubs-table thead th {
+        background: #172b3d;
+        color: #fff;
+        padding: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+        border: none;
+    }
+
+        .clubs-table thead th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        .clubs-table thead th:last-child {
+            border-top-right-radius: 8px;
+        }
+
+    .clubs-table tbody td {
+        padding: 16px;
+        border-bottom: 1px solid #e9eef5;
+        vertical-align: middle;
+    }
+
+    .clubs-table tbody tr:hover td {
+        background: #f5f9ff;
+    }
+
+.club-avatar {
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    background: #e8f3ff;
+    color: #1676df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.club-name {
+    color: #12243a;
+}
+
+.league-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #e6f1ff;
+    color: #0866d5;
+    padding: 7px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.clubs-table .btn {
+    border-radius: 6px;
+    padding: 6px 11px;
+    white-space: nowrap;
+}
+
+.table-bottom {
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    color: #64748b;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+/* ========== FOOTER ========== */
+
+.footer,
+.football-footer {
+    position: static;
+    margin-top: auto;
+}
+
+.football-footer {
+    background: #071a34;
+    color: #aabbd0;
+    font-size: .85rem;
+}
+
+    .football-footer a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+        .football-footer a:hover {
+            color: #fff;
+        }
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 991.98px) {
+    .football-search {
+        max-width: 100%;
+    }
+
+    .football-navbar .dropdown-menu {
+        margin-top: 5px;
+        box-shadow: none;
+    }
+
+    .football-navbar .nav-link {
+        margin-bottom: 3px;
+    }
+}
+
+@media (max-width: 768px) {
+    .clubs-page {
+        padding-top: 25px !important;
+    }
+
+    .clubs-table-card {
+        padding: 14px;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-number {
+        font-size: 25px;
+    }
+
+    .clubs-table tbody td {
+        padding: 12px;
+    }
+}
+/* Shared button sizing across management and account pages. */
+main .btn:not(.btn-link) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: .5rem 1rem !important;
+    border-radius: .5rem !important;
+    font-size: .9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+main .btn.btn-sm:not(.btn-link) {
+    min-height: 34px;
+    padding: .375rem .75rem !important;
+    font-size: .875rem;
+}
+
+main .btn.app-row-action {
+    width: 34px;
+    height: 34px;
+    min-height: 34px;
+    padding: 0 !important;
+    flex: 0 0 34px;
+    box-shadow: none;
+}
+
+main td:has(.app-row-action) {
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+main td:has(.app-row-action) > .d-flex {
+    justify-content: center !important;
+    gap: .5rem !important;
+}
+
+main td > .app-row-action + .app-row-action {
+    margin-inline-start: .25rem;
 }

@@ -1,0 +1,271 @@
+@model IEnumerable<Football.Models.Coach>
+
+@{
+    ViewData["Title"] = "Coaches List";
+
+    var coaches = Model.ToList();
+    var totalClubs = coaches.Count;
+
+    var recentClubs = coaches.Sum(c => c.Teams.Count);
+
+    int count = 1;
+}
+
+<div class="clubs-page py-5">
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between
+            align-items-center flex-wrap gap-3 mb-4">
+
+            <div>
+                <div class="section-label mb-2">
+                    <i class="bi bi-circle-fill me-1"></i>
+                    COACHES MANAGEMENT
+                </div>
+
+                <h1 class="fw-bold mb-1">Coaches List</h1>
+
+                <p class="text-muted mb-0">
+                    Manage your football coaches
+                </p>
+            </div>
+
+            <a asp-controller="Coaches"
+               asp-action="Create"
+               class="btn btn-primary add-club-btn">
+
+                <i class="bi bi-plus-circle me-2"></i>
+                Add Coach
+            </a>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon stat-blue">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">
+                            Total Coaches
+                        </div>
+
+                        <div class="stat-number">
+                            @totalClubs
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon stat-orange">
+                        <i class="bi bi-calendar-check-fill"></i>
+                    </div>
+
+                    <div>
+                        <div class="stat-label">
+                            Assigned Teams
+                        </div>
+
+                        <div class="stat-number">
+                            @recentClubs
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Main Table Card -->
+        <div class="clubs-table-card">
+
+            <!-- Search -->
+            <div class="row g-3 mb-4 align-items-center">
+
+                <div class="col-lg-9">
+                    <div class="input-group">
+
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+
+                        <input type="text"
+                               id="clubSearch"
+                               class="form-control"
+                               placeholder="Search for a coach..." />
+                    </div>
+                </div>
+
+                <div class="col-lg-3 text-lg-end">
+                    <button type="button"
+                            id="clearFilters"
+                            class="btn btn-outline-secondary px-4">
+
+                        <i class="bi bi-arrow-clockwise me-1"></i>
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive academy-table-wrap">
+
+                <table class="table clubs-table align-middle mb-0 academy-table">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Coach</th>
+                            <th scope="col">Club</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="clubsTableBody">
+
+                        @foreach (var coach in coaches)
+                        {
+                            <tr class="club-row"
+                                data-name="@coach.Name.ToLowerInvariant()">
+
+                                <td class="text-muted">
+                                    @count
+                                </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div class="club-avatar">
+                                            <i class="bi bi-shield-fill"></i>
+                                        </div>
+
+                                        <div>
+                                            <div class="fw-bold club-name">
+                                                @coach.Name
+                                            </div>
+
+                                            <small class="text-muted">
+                                                Football Coach
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        <i class="bi bi-calendar3 text-primary"></i>
+
+                                        <span>
+                                            @(coach.Club?.Name ?? "—")
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex justify-content-center
+                                        gap-2 flex-wrap">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@coach.Id"
+                                           class="btn btn-sm btn-outline-secondary app-row-action" title="Details" aria-label="Details"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                    <a asp-action="Edit"
+                                           asp-route-id="@coach.Id"
+                                           class="btn btn-sm btn-outline-primary app-row-action" title="Edit" aria-label="Edit"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                    <a asp-action="Delete"
+                                           asp-route-id="@coach.Id"
+                                           class="btn btn-sm btn-outline-danger app-row-action" title="Delete" aria-label="Delete"><i class="bi bi-trash" aria-hidden="true"></i></a>
+</div>
+                                </td>
+                            </tr>
+
+                            count++;
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState"
+                 class="text-center py-5 d-none">
+
+                <i class="bi bi-search display-5 text-muted"></i>
+
+                <h5 class="mt-3">No coaches found</h5>
+
+                <p class="text-muted">
+                    Try another search.
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="table-bottom">
+
+                <span id="resultsCount">
+                    Showing @totalClubs of @totalClubs coaches
+                </span>
+
+                <span class="text-muted small">
+                    Football Coach Management
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const search = document.getElementById("clubSearch");
+            const rows = document.querySelectorAll(".club-row");
+            const results = document.getElementById("resultsCount");
+            const emptyState = document.getElementById("emptyState");
+            const clear = document.getElementById("clearFilters");
+
+            function filterClubs() {
+
+                const searchValue = search.value.trim().toLowerCase();
+
+                let visible = 0;
+
+                rows.forEach(row => {
+
+                    const name = row.dataset.name || "";
+
+                    const show = name.includes(searchValue);
+
+                    row.classList.toggle("d-none", !show);
+
+                    if (show) {
+                        visible++;
+                    }
+                });
+
+                results.textContent =
+                    `Showing ${visible} of ${rows.length} coaches`;
+
+                emptyState.classList.toggle(
+                    "d-none",
+                    visible !== 0
+                );
+            }
+
+            search.addEventListener("input", filterClubs);
+
+            clear.addEventListener("click", function () {
+                search.value = "";
+                filterClubs();
+            });
+
+            filterClubs();
+        });
+    </script>
+}

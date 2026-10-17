@@ -1,0 +1,76 @@
+
+@model Football.Models.TrainingSession
+
+@{
+    ViewData["Title"] = "Session Details";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h3 class="fw-bold mb-4">Session Details</h3>
+
+            <dl class="row">
+                <dt class="col-sm-4">Title</dt>
+                <dd class="col-sm-8">@Model.Title</dd>
+
+                <dt class="col-sm-4">Club</dt>
+                <dd class="col-sm-8">
+                    @(Model.Team?.Club?.Name ?? "-")
+                </dd>
+
+                <dt class="col-sm-4">Team</dt>
+                <dd class="col-sm-8">
+                    @(Model.Team?.Name ?? "-")
+                </dd>
+
+                <dt class="col-sm-4">Start</dt>
+                <dd class="col-sm-8">
+                    @Model.StartTime.ToString("dd MMM yyyy HH:mm")
+                </dd>
+
+                <dt class="col-sm-4">End</dt>
+                <dd class="col-sm-8">
+                    @Model.EndTime.ToString("dd MMM yyyy HH:mm")
+                </dd>
+
+                <dt class="col-sm-4">Location</dt>
+                <dd class="col-sm-8">
+                    @(Model.Location ?? "-")
+                </dd>
+
+                <dt class="col-sm-4">Attendance Records</dt>
+                <dd class="col-sm-8">@Model.Attendances.Count</dd>
+            </dl>
+
+            <div class="session-detail-actions">
+                <div class="session-detail-primary-actions">
+            <a asp-controller="Attendances"
+               asp-action="Create"
+               asp-route-sessionId="@Model.Id"
+               class="btn btn-primary"><i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+                Record Attendance
+            </a>
+
+            <a asp-controller="Attendances"
+               asp-action="Records"
+               asp-route-sessionId="@Model.Id"
+               class="btn btn-outline-primary"><i class="bi bi-list-check me-2" aria-hidden="true"></i>
+                View Attendance Records
+            </a>
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-outline-primary"><i class="bi bi-pencil me-2" aria-hidden="true"></i>
+                Edit Session
+            </a>
+                </div>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary session-detail-back"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                Back
+            </a>
+            </div>
+        </div>
+    </div>
+</div>

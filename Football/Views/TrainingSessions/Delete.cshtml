@@ -1,0 +1,41 @@
+
+@model Football.Models.TrainingSession
+
+@{
+    ViewData["Title"] = "Delete Session";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h3 class="text-danger fw-bold mb-3">
+                Delete Training Session
+            </h3>
+
+            <p>
+                Are you sure you want to delete
+                <strong>@Model.Title</strong>?
+            </p>
+
+            <div class="alert alert-warning">
+                Sessions with attendance records cannot be deleted.
+            </div>
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2" aria-hidden="true"></i>
+                    Confirm Delete
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

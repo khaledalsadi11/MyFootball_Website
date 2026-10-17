@@ -1,0 +1,88 @@
+
+@model Football.Models.Attendance
+@using Football.Models
+
+@{
+    ViewData["Title"] = "Edit Attendance";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <h2 class="fw-bold">Edit Attendance</h2>
+            <p class="text-muted mb-4">
+                Update the attendance record.
+            </p>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <form asp-action="Edit"
+                          asp-route-id="@Model.Id"
+                          method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="Id" type="hidden" />
+                        <input asp-for="TrainingSessionId" type="hidden" />
+                        <input asp-for="PlayerId" type="hidden" />
+
+                        <div asp-validation-summary="All"
+                             class="text-danger mb-3"></div>
+
+                        <div class="alert alert-light border">
+                            <i class="bi bi-info-circle me-2"></i>
+                            To change the player or session, delete this
+                            record and create a new one.
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Status"
+                                   class="form-label fw-semibold">
+                                Attendance Status
+                            </label>
+
+                            <select asp-for="Status"
+                                    asp-items="Html.GetEnumSelectList<AttendanceStatus>()"
+                                    class="form-select form-select-lg">
+                            </select>
+
+                            <span asp-validation-for="Status"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Notes"
+                                   class="form-label fw-semibold">
+                                Notes
+                            </label>
+
+                            <textarea asp-for="Notes"
+                                      class="form-control"
+                                      rows="4"></textarea>
+
+                            <span asp-validation-for="Notes"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-3">
+                            <a asp-action="Records" asp-route-sessionId="@Model.TrainingSessionId"
+                               class="btn btn-outline-secondary border px-4"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-2"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,149 +1,198 @@
-﻿@model Club
+
+@model Football.Models.Club
 
 @{
-    ViewData["Title"] = $"{Model.Name} Players";
+    ViewData["Title"] = "Club Details";
 }
 
-<div class="container py-4">
+<div class="container py-5">
 
-    <!-- Club Header -->
-    <div class="club-header rounded-3 mb-4 text-white">
-        <div class="d-flex align-items-center gap-4 p-4">
-            @* <img src=""
-                 alt="Club Logo"
-                 class="club-logo" /> *@
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
 
-            <div>
-                <h1 class="fw-bold mb-2">@Model.Name</h1>
-                <p class="mb-0 fs-5">
-                    🏆 @Model.League.LeagueName
-                </p>
-            </div>
-        </div>
-    </div>
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
-    <!-- Players Heading -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-1">Players</h2>
-            <p class="text-secondary mb-0">
-                Meet the players of @Model.Name and their nationalities.
-            </p>
-        </div>
+                <!-- Header -->
+                <div class="p-4 p-md-5 text-white"
+                     style="background:linear-gradient(110deg,#071d3a,#12549a)">
 
-        <span class="badge bg-primary rounded-pill fs-6 px-3 py-2">
-            Total: @(Model.Players?.Count ?? 0)
-        </span>
-    </div>
+                    <div class="d-flex align-items-center gap-3">
 
-    <hr class="text-primary opacity-25 mb-4" />
-
-    <!-- Players Cards -->
-    <div class="row g-3">
-
-        @foreach (var player in Model.Players)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-
-                <div class="card player-card h-100">
-                    <div class="card-body d-flex align-items-center gap-3 p-3">
-
-                        <div class="player-number d-flex align-items-center justify-content-center rounded-3">
-                            <span class="fw-bold fs-3">
-                                @player.ShirtNumber
-                            </span>
+                        <div class="bg-white bg-opacity-25 rounded-circle p-4">
+                            <i class="bi bi-shield-fill fs-1"></i>
                         </div>
 
-                        <div class="flex-grow-1">
-                            <h5 class="fw-bold mb-2">
-                                @player.Name
-                            </h5>
+                        <div>
+                            <h2 class="fw-bold mb-2">
+                                @Model.Name
+                            </h2>
 
-                            <p class="text-secondary mb-0">
-                                @player.Position
-                            </p>
-
-                            <div class="mt-2">
-                                <span class="text-secondary small me-2">
-                                    Nationality
-                                </span>
-
-                                <span class="badge bg-light text-dark border">
-                                    @(player.Nationality?.Country ?? "Unknown")
-                                </span>
-                            </div>
+                            <span class="badge bg-light text-primary px-3 py-2">
+                                <i class="bi bi-shield-check me-1"></i>
+                                Football Club
+                            </span>
                         </div>
 
                     </div>
                 </div>
 
+                <!-- Body -->
+                <div class="card-body p-4 p-md-5">
+
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-info-circle text-primary me-2"></i>
+                        Club Information
+                    </h5>
+
+                    <!-- Club Information -->
+                    <div class="row g-3 mb-5">
+
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <small class="text-muted">
+                                    Club Name
+                                </small>
+
+                                <h6 class="fw-bold mt-2 mb-0">
+                                    @Model.Name
+                                </h6>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-3 p-3 h-100">
+
+                                <small class="text-muted">
+                                    Created On
+                                </small>
+
+                                <h6 class="fw-bold mt-2 mb-0">
+                                    @Model.CreatedOn.ToString("dd MMM yyyy")
+                                </h6>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Players Header -->
+                    <div class="d-flex justify-content-between
+                                align-items-center flex-wrap gap-2 mb-3">
+
+                        <div>
+                            <h5 class="fw-bold mb-1">
+
+                                <i class="bi bi-people-fill text-primary me-2"></i>
+                                Club Players
+
+                            </h5>
+
+                            <p class="text-muted small mb-0">
+                                Players currently registered with this club
+                            </p>
+                        </div>
+
+                        <span class="badge bg-primary px-3 py-2">
+                            @(Model.Players?.Count ?? 0) Players
+                        </span>
+
+                    </div>
+
+                    <!-- Players Table -->
+                    <div class="table-responsive academy-table-wrap border rounded-3">
+
+                        <table class="table table-hover align-middle mb-0 academy-table">
+
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col" class="ps-3">#</th>
+                                    <th scope="col">Player Name</th>
+                                    <th scope="col">Shirt No.</th>
+                                    <th scope="col">Position</th>
+                                    <th scope="col">Nationality</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @if (Model.Players?.Any() == true)
+                                {
+                                    int count = 1;
+
+                                    @foreach (var player in Model.Players)
+                                    {
+                                        <tr>
+                                            <td class="ps-3">
+                                                @count
+                                            </td>
+
+                                            <td class="fw-semibold">
+                                                @player.Name
+                                            </td>
+
+                                            <td>
+                                                <span class="badge bg-primary">
+                                                    #@player.ShirtNumber
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                @player.Position
+                                            </td>
+
+                                            <td>
+                                                @(player.Nationality?.Country ?? "N/A")
+                                            </td>
+                                        </tr>
+
+                                        count++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5"
+                                            class="text-center text-muted py-4">
+
+                                            <i class="bi bi-people fs-3 d-block mb-2"></i>
+
+                                            No players registered yet.
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Actions -->
+                    <div class="d-flex justify-content-between flex-wrap gap-2">
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary px-4">
+
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Back to Clubs
+                        </a>
+
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-primary px-4">
+
+                            <i class="bi bi-pencil-square me-1"></i>
+                            Edit Club
+                        </a>
+
+                    </div>
+
+                </div>
             </div>
-        }
-
+        </div>
     </div>
-
-    <!-- Footer -->
-    <div class="d-flex align-items-center gap-3 mt-5 mb-3">
-        <hr class="flex-grow-1 text-primary opacity-25" />
-
-        <span class="text-secondary text-nowrap">
-            Total Players: @(Model.Players?.Count ?? 0)
-        </span>
-
-        <hr class="flex-grow-1 text-primary opacity-25" />
-    </div>
-
 </div>
-
-<style>
-    .club-header {
-        background: linear-gradient(110deg, #172f50, #0d294b);
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    }
-
-    .club-logo {
-        width: 100px;
-        height: 100px;
-        object-fit: contain;
-        background-color: white;
-        border-radius: 50%;
-        padding: 5px;
-        flex-shrink: 0;
-    }
-
-    .player-card {
-        border: 1px solid #e2eaf3;
-        border-radius: 14px;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(20, 50, 90, 0.03);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-        .player-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(20, 50, 90, 0.10);
-        }
-
-    .player-number {
-        width: 65px;
-        height: 65px;
-        flex-shrink: 0;
-        background-color: #dceaff;
-        color: #0d6efd;
-    }
-
-    @@media (max-width: 576px) {
-        .club-logo {
-            width: 70px;
-            height: 70px;
-        }
-
-        .club-header h1 {
-            font-size: 1.5rem;
-        }
-
-        .club-header .p-4 {
-            padding: 1rem !important;
-        }
-    }
-</style>

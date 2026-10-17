@@ -1,0 +1,71 @@
+@page
+@model RegisterModel
+@{ ViewData["Title"] = "Join Football"; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+}
+<div class="auth-page">
+    <div class="auth-shell">
+        <partial name="_AuthBrand" />
+        <section class="auth-panel" aria-labelledby="auth-heading">
+            <div class="auth-panel-inner">
+                <nav class="auth-tabs" aria-label="Account">
+                    <a class="" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" >Log in</a>
+                    <a class="active" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" aria-current="page">Create account</a>
+                </nav>
+                <div class="auth-intro">
+                    <span class="auth-eyebrow">YOUR NEXT CHAPTER</span>
+                    <h1 id="auth-heading">Join the team<span>.</span></h1>
+                    <p>A better way to run your academy starts here.</p>
+                </div>
+                <form id="registerForm" method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                    <div asp-validation-summary="ModelOnly" class="auth-validation" role="alert"></div>
+                    <div class="auth-field">
+                        <label asp-for="Input.Email">Email address</label>
+                        <div class="auth-input-wrap">
+                            <i class="bi bi-envelope" aria-hidden="true"></i>
+                            <input asp-for="Input.Email" type="email" class="form-control" autocomplete="username" aria-required="true" placeholder="you@example.com" />
+                        </div>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="auth-field">
+                        <label asp-for="Input.Password">Password</label>
+                        <div class="auth-input-wrap">
+                            <i class="bi bi-lock" aria-hidden="true"></i>
+                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Create a password" aria-describedby="password-hint" />
+                            <button type="button" class="auth-password-toggle" data-password-target="Input_Password" aria-controls="Input_Password" aria-label="Show password" aria-pressed="false"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                        </div>
+                        <small id="password-hint" class="auth-hint">Use uppercase, lowercase, a number and a symbol.</small>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="auth-field">
+    <label asp-for="Input.ConfirmPassword">Confirm password</label>
+    <div class="auth-input-wrap">
+        <i class="bi bi-lock" aria-hidden="true"></i>
+        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Repeat your password" />
+        <button type="button" class="auth-password-toggle" data-password-target="Input_ConfirmPassword" aria-controls="Input_ConfirmPassword" aria-label="Show confirm password" aria-pressed="false"><i class="bi bi-eye" aria-hidden="true"></i></button>
+    </div>
+    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+</div>
+                    <button id="registerSubmit" type="submit" class="btn auth-submit w-100">Create account <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+                </form>
+                @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                {
+                    <div class="auth-divider"><span>or continue with</span></div>
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="auth-providers">
+                        @foreach (var provider in Model.ExternalLogins!)
+                        {
+                            <button type="submit" class="btn btn-outline-secondary" name="provider" value="@provider.Name">@provider.DisplayName</button>
+                        }
+                    </form>
+                }
+                <p class="auth-switch">Already part of the team? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Log in <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></p>
+                <div class="auth-footnote"><i class="bi bi-shield-check" aria-hidden="true"></i> One account. Your academy, connected.</div>
+            </div>
+        </section>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/auth.js" asp-append-version="true"></script>
+}

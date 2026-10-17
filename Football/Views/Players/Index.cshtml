@@ -1,0 +1,120 @@
+
+@model IEnumerable<Football.Models.Player>
+
+@{
+    ViewData["Title"] = "Players";
+    var players = Model.ToList();
+    var now = DateTime.UtcNow;
+    var recentPlayers = players.Count(p => p.CreatedOn >= now.AddDays(-30) && p.CreatedOn <= now);
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Players Management</h2>
+            <p class="text-muted mb-0">
+                Manage academy players and their teams.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>
+            Add Player
+        </a>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="stat-card h-100">
+                <div class="stat-icon stat-blue"><i class="bi bi-people-fill" aria-hidden="true"></i></div>
+                <div><div class="stat-label">Total Players</div><div class="stat-number">@players.Count</div></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stat-card h-100">
+                <div class="stat-icon stat-green"><i class="bi bi-calendar-check" aria-hidden="true"></i></div>
+                <div><div class="stat-label">Added Last 30 Days</div><div class="stat-number">@recentPlayers</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
+                <div class="input-group flex-grow-1" style="flex-basis:240px">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted" aria-hidden="true"></i></span>
+                    <input id="playerSearch" type="search" class="form-control" placeholder="Search players by name..." aria-label="Search players by name" aria-controls="playersTableBody" />
+                </div>
+                <button id="clearPlayerSearch" type="button" class="btn btn-outline-secondary"><i class="bi bi-arrow-clockwise me-2" aria-hidden="true"></i>Clear</button>
+            </div>
+            <div class="table-responsive academy-table-wrap">
+                <table class="table table-hover align-middle academy-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Shirt #</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Club</th>
+                            <th scope="col">Team</th>
+                            <th scope="col">Nationality</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="playersTableBody">
+                        @foreach (var player in players)
+                        {
+                            <tr data-player-name="@player.Name">
+                                <td class="fw-semibold">@player.Name</td>
+                                <td>@player.ShirtNumber</td>
+                                <td>@player.Position</td>
+                                <td>@(player.Club?.Name ?? "-")</td>
+                                <td>@(player.Team?.Name ?? "Unassigned")</td>
+                                <td>@(player.Nationality?.Country ?? "-")</td>
+                                <td class="text-end">
+                                    <a asp-action="Details"
+                                       asp-route-id="@player.Id"
+                                       class="btn btn-sm btn-outline-secondary app-row-action" title="Details" aria-label="Details"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                    <a asp-action="Edit"
+                                       asp-route-id="@player.Id"
+                                       class="btn btn-sm btn-outline-primary app-row-action" title="Edit" aria-label="Edit"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                    <a asp-action="Delete"
+                                       asp-route-id="@player.Id"
+                                       class="btn btn-sm btn-outline-danger app-row-action" title="Delete" aria-label="Delete"><i class="bi bi-trash" aria-hidden="true"></i></a>
+</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="playerSearchEmpty" class="text-center text-muted py-4 @(players.Count > 0 ? "d-none" : "")">No players found.</div>
+            <div class="table-bottom"><span id="playerResultsCount" role="status" aria-live="polite">Showing @players.Count of @players.Count players</span><span class="text-muted small">Football Academy</span></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const search = document.getElementById('playerSearch');
+            const clear = document.getElementById('clearPlayerSearch');
+            const rows = Array.from(document.querySelectorAll('#playersTableBody tr'));
+            const normalize = value => value.normalize('NFKC').trim().toLocaleLowerCase();
+            function filterPlayers() {
+                const query = normalize(search.value);
+                let visible = 0;
+                rows.forEach(row => {
+                    const matches = normalize(row.dataset.playerName || '').includes(query);
+                    row.classList.toggle('d-none', !matches);
+                    if (matches) visible++;
+                });
+                document.getElementById('playerSearchEmpty').classList.toggle('d-none', visible !== 0);
+                document.getElementById('playerResultsCount').textContent = `Showing ${visible} of ${rows.length} players`;
+            }
+            search.addEventListener('input', filterPlayers);
+            clear.addEventListener('click', () => { search.value = ''; filterPlayers(); search.focus(); });
+        })();
+    </script>
+}

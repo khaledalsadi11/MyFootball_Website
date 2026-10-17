@@ -1,0 +1,69 @@
+
+@model Football.Models.AgeGroup
+
+@{
+    ViewData["Title"] = "Delete Age Group";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <div class="card-body p-5 text-center">
+
+                    <div class="bg-danger bg-opacity-10 text-danger
+                                rounded-circle d-inline-flex
+                                align-items-center justify-content-center mb-4"
+                         style="width:80px;height:80px;">
+                        <i class="bi bi-trash3 fs-1"></i>
+                    </div>
+
+                    <h3 class="fw-bold">Delete Age Group?</h3>
+
+                    <p class="text-muted mb-4">
+                        Are you sure you want to delete this age group?
+                        This action cannot be undone.
+                    </p>
+
+                    <div class="bg-light rounded-4 p-4 mb-4 text-start">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Name</span>
+                            <strong>@Model.Name</strong>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Age Range</span>
+                            <strong>
+                                @Model.MinAge - @Model.MaxAge years
+                            </strong>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@Model.Id"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary border rounded-3 px-4"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-danger rounded-3 px-4">
+                                <i class="bi bi-trash me-2"></i>
+                                Delete Age Group
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

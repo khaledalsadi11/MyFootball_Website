@@ -1,0 +1,152 @@
+
+@model Football.Models.Coach
+
+@{
+    ViewData["Title"] = "Add Coach";
+}
+
+<div class="container py-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <h3 class="fw-bold mb-4">
+                Add New Coach
+            </h3>
+
+            <form asp-controller="Coaches"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <!-- Coach Name -->
+                <div class="mb-3">
+                    <label asp-for="Name"
+                           class="form-label">
+                        Coach Name
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Coach full name"
+                           required />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger"></span>
+                </div>
+
+                <!-- Club -->
+                <div class="mb-3">
+                    <label asp-for="ClubId"
+                           class="form-label">
+                        Club
+                    </label>
+
+                    <select asp-for="ClubId"
+                            asp-items="ViewBag.Clubs"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            -- Select Club --
+                        </option>
+                    </select>
+
+                    <span asp-validation-for="ClubId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="SelectedTeamId" class="form-label">
+                        Team
+                    </label>
+
+                    <select id="SelectedTeamId"
+                            name="SelectedTeamId"
+                            asp-items="ViewBag.Teams"
+                            class="form-select">
+                        <option value="">-- Select Team --</option>
+                    </select>
+                    @Html.ValidationMessage("SelectedTeamId", null, new { @class = "text-danger" })
+                </div>
+
+                <!-- Nationality -->
+                <div class="mb-3">
+                    <label asp-for="NationalityId"
+                           class="form-label">
+                        Nationality
+                    </label>
+
+                    <select asp-for="NationalityId"
+                            asp-items="ViewBag.Nationalities"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            -- Select Nationality --
+                        </option>
+                    </select>
+
+                    <span asp-validation-for="NationalityId"
+                          class="text-danger"></span>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bi bi-check-circle me-1"></i>
+                        Save Coach
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const clubSelect = document.getElementById("ClubId");
+        const teamSelect = document.getElementById("SelectedTeamId");
+        let teamRequest;
+
+        clubSelect.addEventListener("change", async function () {
+            if (teamRequest) teamRequest.abort();
+            teamSelect.replaceChildren(new Option("-- Select Team --", ""));
+            teamSelect.disabled = false;
+            if (!clubSelect.value) return;
+
+            const request = new AbortController();
+            teamRequest = request;
+            teamSelect.disabled = true;
+            try {
+                const url = new URL('@Url.Action("GetAvailableTeams", "Coaches", new { area = "" })', window.location.origin);
+                url.searchParams.set("clubId", clubSelect.value);
+                const response = await fetch(url, { signal: request.signal });
+                if (!response.ok) throw new Error("Unable to load teams");
+                const teams = await response.json();
+                if (request.signal.aborted) return;
+                teams.forEach(team => teamSelect.add(new Option(team.name, team.id)));
+            } catch (error) {
+                if (error.name !== "AbortError") {
+                    teamSelect.replaceChildren(new Option("Unable to load teams. Select the club again.", ""));
+                }
+            } finally {
+                if (teamRequest === request) teamSelect.disabled = false;
+            }
+        });
+    </script>
+}

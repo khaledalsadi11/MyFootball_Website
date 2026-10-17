@@ -1,0 +1,203 @@
+@model IEnumerable<Football.Models.TrainingSession>
+
+@{
+    ViewData["Title"] = "Attendance Management";
+
+    var sessions = Model?.ToList()
+        ?? new System.Collections.Generic.List<Football.Models.TrainingSession>();
+}
+
+<div class="container py-4 py-lg-5">
+
+    <!-- HEADER -->
+    <div class="rounded-4 shadow-sm p-4 p-md-5 mb-4 text-white"
+         style="background:linear-gradient(110deg,#143e2e,#237652)">
+
+        <div class="d-flex flex-wrap align-items-center
+                    justify-content-between gap-3">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="bg-white bg-opacity-25 rounded-3 p-3">
+                    <i class="bi bi-clipboard-check fs-2"
+                       aria-hidden="true"></i>
+                </div>
+
+                <div>
+                    <h2 class="fw-bold mb-1">
+                        Attendance Management
+                    </h2>
+
+                    <p class="mb-0">
+                        Record and update player attendance for each training session.
+                    </p>
+                </div>
+
+            </div>
+
+            <a asp-controller="TrainingSessions"
+               asp-action="Index"
+               class="btn btn-light fw-semibold px-3 py-2">
+
+                <i class="bi bi-calendar-event me-2"
+                   aria-hidden="true"></i>
+                Training Sessions
+            </a>
+
+        </div>
+    </div>
+
+    <!-- SESSIONS -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex flex-wrap align-items-center
+                        justify-content-between gap-2 mb-4">
+
+                <h5 class="fw-bold mb-0" style="color:#143e2e">
+                    <i class="bi bi-calendar2-week me-2"
+                       style="color:#237652"
+                       aria-hidden="true"></i>
+                    Training Sessions
+                </h5>
+
+                <span class="badge bg-light border rounded-pill px-3 py-2"
+                      style="color:#237652">
+                    @sessions.Count Session(s)
+                </span>
+            </div>
+
+            @if (sessions.Count > 0)
+            {
+                <div class="table-responsive academy-table-wrap">
+
+                    <table class="table table-hover align-middle mb-0 academy-table">
+
+                        <caption class="visually-hidden">
+                            Training sessions and recorded attendance counts
+                        </caption>
+
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="py-3">Session</th>
+                                <th scope="col" class="py-3">Club</th>
+                                <th scope="col" class="py-3">Team</th>
+                                <th scope="col" class="py-3">Date</th>
+                                <th scope="col" class="py-3 text-center">
+                                    Recorded
+                                </th>
+                                <th scope="col" class="py-3 text-end">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var session in sessions)
+                            {
+                                DateTime? sessionDate = session.StartTime;
+                                var recordedCount = session.Attendances?.Count ?? 0;
+
+                                <tr>
+                                    <td class="py-3">
+                                        <div class="d-flex align-items-center gap-2">
+
+                                            <i class="bi bi-calendar-event"
+                                               style="color:#237652"
+                                               aria-hidden="true"></i>
+
+                                            <span class="fw-semibold"
+                                                  style="color:#143e2e">
+                                                @session.Title
+                                            </span>
+                                        </div>
+                                    </td>
+
+                                    <td class="py-3">
+                                        @(session.Team?.Club?.Name ?? "-")
+                                    </td>
+
+                                    <td class="py-3">
+                                        @(session.Team?.Name ?? "-")
+                                    </td>
+
+                                    <td class="py-3 text-nowrap">
+                                        @(sessionDate?.ToString("dd MMM yyyy") ?? "-")
+                                    </td>
+
+                                    <td class="py-3 text-center">
+                                        <span class="badge bg-light border
+                                                     rounded-pill px-3 py-2"
+                                              style="color:#237652">
+
+                                            <i class="bi bi-people me-1"
+                                               aria-hidden="true"></i>
+                                            @recordedCount
+                                        </span>
+                                    </td>
+
+                                    <td class="py-3 text-end">
+                                        <div class="d-flex justify-content-end gap-2 flex-wrap">
+                                        <a asp-action="Records" asp-route-sessionId="@session.Id" class="btn btn-sm btn-outline-primary text-nowrap"><i class="bi bi-list-check me-1" aria-hidden="true"></i>View records</a>
+                                        <a asp-controller="Attendances"
+                                           asp-action="Create"
+                                           asp-route-sessionId="@session.Id"
+                                           class="btn btn-sm btn-primary
+                                                  rounded-3 px-3 py-2 text-nowrap"
+                                           style="--bs-btn-bg:#237652;
+                                                  --bs-btn-border-color:#237652;
+                                                  --bs-btn-hover-bg:#143e2e;
+                                                  --bs-btn-hover-border-color:#143e2e;
+                                                  --bs-btn-active-bg:#143e2e;
+                                                  --bs-btn-active-border-color:#143e2e">
+
+                                            <i class="bi bi-pencil-square me-1"
+                                               aria-hidden="true"></i>
+                                            Record / Edit
+                                        </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="bg-light rounded-4 text-center py-5 px-3">
+
+                    <i class="bi bi-calendar-x display-5"
+                       style="color:#237652"
+                       aria-hidden="true"></i>
+
+                    <h5 class="fw-bold mt-3" style="color:#143e2e">
+                        No training sessions available
+                    </h5>
+
+                    <p class="text-muted mb-4">
+                        Create a training session to start recording attendance.
+                    </p>
+
+                    <a asp-controller="TrainingSessions"
+                       asp-action="Create"
+                       class="btn btn-primary rounded-3 px-4 py-2"
+                       style="--bs-btn-bg:#237652;
+                              --bs-btn-border-color:#237652;
+                              --bs-btn-hover-bg:#143e2e;
+                              --bs-btn-hover-border-color:#143e2e">
+
+                        <i class="bi bi-plus-circle me-2"
+                           aria-hidden="true"></i>
+                        Create Training Session
+                    </a>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

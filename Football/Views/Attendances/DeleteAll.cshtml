@@ -1,0 +1,41 @@
+@model Football.Models.TrainingSession
+@{
+    ViewData["Title"] = "Delete Session Attendance";
+    var recordCount = Model.Attendances.Count;
+}
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <span class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle p-3 mb-3"><i class="bi bi-trash fs-2" aria-hidden="true"></i></span>
+                        <h2 class="fw-bold">Delete all attendance for this session?</h2>
+                        <p class="text-muted mb-0">Review the session below before confirming.</p>
+                    </div>
+                    <div class="bg-light border rounded-3 p-4 mb-4">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Training session</dt><dd class="col-sm-8">@Model.Title</dd>
+                            <dt class="col-sm-4">Team</dt><dd class="col-sm-8">@(Model.Team?.Name ?? "—")</dd>
+                            <dt class="col-sm-4">Date</dt><dd class="col-sm-8">@Model.StartTime.ToString("dd MMM yyyy HH:mm")</dd>
+                            <dt class="col-sm-4">Records to delete</dt><dd class="col-sm-8 mb-0"><span class="badge bg-danger bg-opacity-10 text-danger">@recordCount record(s)</span></dd>
+                        </dl>
+                    </div>
+                    <div class="alert alert-warning d-flex gap-2" role="note"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><span>This permanently deletes all <strong>@recordCount attendance record(s)</strong> for <strong>@Model.Title</strong>. The session, players and attendance for other sessions are kept.</span></div>
+                    <form asp-action="DeleteAll" method="post">
+                        <input type="hidden" name="sessionId" value="@Model.Id" />
+                        <input type="hidden" name="expectedCount" value="@recordCount" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        <div class="d-flex flex-wrap justify-content-end gap-2">
+                            <a asp-action="Records" asp-route-sessionId="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                            @if (recordCount > 0)
+                            {
+                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2" aria-hidden="true"></i>Delete all @recordCount record(s)</button>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

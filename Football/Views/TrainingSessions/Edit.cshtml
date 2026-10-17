@@ -1,0 +1,84 @@
+
+@model Football.Models.TrainingSession
+
+@{
+    ViewData["Title"] = "Edit Training Session";
+}
+
+<div class="container py-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="fw-bold mb-4">Edit Training Session</h3>
+
+            <form asp-action="Edit"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TeamId" class="form-label">Team</label>
+                    <select asp-for="TeamId"
+                            asp-items="ViewBag.Teams"
+                            class="form-select">
+                        <option value="0">-- Select Team --</option>
+                    </select>
+                    <span asp-validation-for="TeamId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="StartTime" class="form-label"></label>
+                        <input asp-for="StartTime"
+                               type="datetime-local"
+                               class="form-control" />
+                        <span asp-validation-for="StartTime"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="EndTime" class="form-label"></label>
+                        <input asp-for="EndTime"
+                               type="datetime-local"
+                               class="form-control" />
+                        <span asp-validation-for="EndTime"
+                              class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label asp-for="Location" class="form-label"></label>
+                    <input asp-for="Location" class="form-control" />
+                    <span asp-validation-for="Location"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                        Save Changes
+                    </button>
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

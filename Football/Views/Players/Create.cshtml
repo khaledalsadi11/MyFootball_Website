@@ -1,0 +1,158 @@
+
+@model Football.Models.Player
+
+@{
+    ViewData["Title"] = "Add Player";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h3 class="mb-4">Add New Player</h3>
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control"
+                               placeholder="Player full name" />
+                        <span asp-validation-for="Name"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ShirtNumber" class="form-label">
+                            Shirt Number
+                        </label>
+                        <input asp-for="ShirtNumber"
+                               type="number" min="1" max="99"
+                               class="form-control" />
+                        <span asp-validation-for="ShirtNumber"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Position" class="form-label"></label>
+                        <select asp-for="Position" class="form-select">
+                            <option value="">-- Select Position --</option>
+                            <option value="GK">Goalkeeper</option>
+                            <option value="CB">Center Back</option>
+                            <option value="LB">Left Back</option>
+                            <option value="RB">Right Back</option>
+                            <option value="CDM">Defensive Midfielder</option>
+                            <option value="CM">Central Midfielder</option>
+                            <option value="CAM">Attacking Midfielder</option>
+                            <option value="LW">Left Winger</option>
+                            <option value="RW">Right Winger</option>
+                            <option value="ST">Striker</option>
+                        </select>
+                        <span asp-validation-for="Position"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="NationalityId" class="form-label">
+                            Nationality
+                        </label>
+                         <label asp-for="NationalityId" class="form-label"></label>
+                        <input asp-for="Name" class="form-control"
+                               placeholder="Nationality" />
+
+                       
+                        </input>
+                        <span asp-validation-for="NationalityId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ClubId" class="form-label">
+                            Club
+                        </label>
+                        <select asp-for="ClubId"
+                                asp-items="ViewBag.Clubs"
+                                id="clubSelect"
+                                class="form-select">
+                            <option value="0">-- Select Club --</option>
+                        </select>
+                        <span asp-validation-for="ClubId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="TeamId" class="form-label">
+                            Team (Optional)
+                        </label>
+                        <select asp-for="TeamId"
+                                asp-items="ViewBag.Teams"
+                                id="teamSelect"
+                                class="form-select">
+                            <option value="">-- No Team --</option>
+                        </select>
+                        <span asp-validation-for="TeamId"
+                              class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                        Save Player
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const clubSelect = document.getElementById("clubSelect");
+        const teamSelect = document.getElementById("teamSelect");
+
+        clubSelect.addEventListener("change", async function () {
+            teamSelect.replaceChildren(
+                new Option("-- No Team --", "")
+            );
+
+            const clubId = this.value;
+
+            if (!clubId || clubId === "0") return;
+
+            teamSelect.disabled = true;
+
+            try {
+                const response = await fetch(
+                    '@Url.Action("TeamsByClub", "Players")'
+                    + '?clubId=' + encodeURIComponent(clubId)
+                );
+
+                if (!response.ok)
+                    throw new Error("Failed to load teams");
+
+                const teams = await response.json();
+
+                if (clubSelect.value !== clubId) return;
+
+                teams.forEach(team => {
+                    teamSelect.add(new Option(team.name, team.id));
+                });
+            } catch (error) {
+                console.error(error);
+            } finally {
+                teamSelect.disabled = false;
+            }
+        });
+    </script>
+}

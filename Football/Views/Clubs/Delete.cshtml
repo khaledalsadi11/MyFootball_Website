@@ -1,42 +1,115 @@
-﻿@model Club;
 
-<form method="post">
+@model Football.Models.Club
 
-
-    <div class="border p-3 mt-4">
-
-        <div>
-            <h2>
-                Delete Club
-            </h2>
-        </div>
-        <hr>
-
-        <div class="mb-3">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label asp-for="LeagueId" class="form-label">League</label>
-
-            <select asp-for="LeagueId" class="form-select" asp-items="ViewBag.LeagueList" disabled>
-               
-            </select>
-
-            <span asp-validation-for="LeagueId" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="CreatedOn"></label>
-            <input asp-for="CreatedOn" class="form-control" />
-        </div>
-
-    
-        <button type="submit" class="btn btn-primary" style="width:150px">Delete</button>
-        <a asp-action="Index" asp-controller="Clubs" class="btn btn-primary" style="width:150px">Back To Clubs</a>
-
-    </div>
-</form>
-@section Scripts
-{
-    <partial name="_ValidationScriptsPartial" />
+@{
+    ViewData["Title"] = "Delete Club";
 }
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Delete Icon -->
+                    <div class="text-center mb-4">
+
+                        <div class="d-inline-flex align-items-center
+                                    justify-content-center rounded-circle
+                                    bg-danger-subtle text-danger mb-3"
+                             style="width:80px;height:80px">
+
+                            <i class="bi bi-trash3-fill fs-1"></i>
+                        </div>
+
+                        <h3 class="fw-bold">
+                            Delete Club?
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Are you sure you want to delete this club?
+                        </p>
+
+                    </div>
+
+                    <!-- Warning -->
+                    <div class="alert alert-danger rounded-3">
+
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                        This action cannot be undone.
+                    </div>
+
+                    <div class="alert alert-warning rounded-3">
+
+                        <i class="bi bi-info-circle me-2"></i>
+
+                        Clubs with registered players, teams or coaches
+                        cannot be deleted.
+                    </div>
+
+                    <!-- Club Information -->
+                    <div class="bg-light rounded-3 p-4 mb-4">
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span class="text-muted">
+                                Club Name
+                            </span>
+
+                            <strong>
+                                @Model.Name
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <span class="text-muted">
+                                Created On
+                            </span>
+
+                            <strong>
+                                @Model.CreatedOn.ToString("dd MMM yyyy")
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Delete Form -->
+                    <form asp-controller="Clubs"
+                          asp-action="Delete"
+                          asp-route-id="@Model.Id"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary px-4"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-danger px-4">
+
+                                <i class="bi bi-trash me-1"></i>
+                                Delete Club
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

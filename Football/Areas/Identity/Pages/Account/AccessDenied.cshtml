@@ -1,0 +1,30 @@
+@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
+<section class="denied-page" aria-labelledby="denied-title">
+    <div class="denied-card">
+        <div class="denied-art" aria-hidden="true"><span class="denied-orbit orbit-one"></span><span class="denied-orbit orbit-two"></span><span class="denied-shield"><i class="bi bi-shield-lock"></i></span><span class="denied-lock"><i class="bi bi-lock-fill"></i></span></div>
+        <span class="account-eyebrow">403 / RESTRICTED AREA</span>
+        <h1 id="denied-title">A little out of bounds.</h1>
+        <p>This part of the academy is only available to accounts with the right permissions.</p>
+        <div class="denied-note"><i class="bi bi-info-circle" aria-hidden="true"></i><span>If you think you should have access, contact your academy administrator.</span></div>
+        <div class="denied-actions">
+            <a class="btn btn-primary" asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-grid-1x2 me-2" aria-hidden="true"></i>Back to dashboard</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a class="btn btn-outline-secondary" asp-area="Identity" asp-page="/Account/Manage/Index">Your account<i class="bi bi-arrow-up-right ms-2" aria-hidden="true"></i></a>
+            }
+            else
+            {
+                <a class="btn btn-outline-secondary" asp-area="Identity" asp-page="/Account/Login">Log in<i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>
+            }
+        </div>
+        <span class="denied-signoff">EVERY ROLE. ONE TEAM.</span>
+    </div>
+</section>

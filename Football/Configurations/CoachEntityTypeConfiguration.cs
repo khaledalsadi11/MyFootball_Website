@@ -1,29 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿
 using Football.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Football.Configurations
 {
-    public class CoachEntityTypeConfiguration : IEntityTypeConfiguration<Coach>
+    public class CoachEntityTypeConfiguration
+        : IEntityTypeConfiguration<Coach>
     {
         public void Configure(EntityTypeBuilder<Coach> builder)
         {
-            builder.HasOne(x => x.Club)
-       .WithOne(x => x.Coach)
-       .HasForeignKey<Coach>(x => x.ClubId);
+            // Club 1 -> Many Coaches
+            builder.HasOne(c => c.Club)
+                .WithMany(c => c.Coaches)
+                .HasForeignKey(c => c.ClubId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-
-            builder.HasOne(x => x.Nationality)
-     .WithMany(x => x.Coaches)
-     .HasForeignKey(x => x.NationalityId);
-
-
-
-            
+            // Nationality 1 -> Many Coaches
+            builder.HasOne(c => c.Nationality)
+                .WithMany(n => n.Coaches)
+                .HasForeignKey(c => c.NationalityId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

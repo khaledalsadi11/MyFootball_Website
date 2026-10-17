@@ -1,0 +1,119 @@
+
+@model Football.Models.Team
+
+@{
+    ViewData["Title"] = "Edit Team";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h3 class="mb-4">Edit Team</h3>
+
+            <form asp-action="Edit"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ClubId" class="form-label">Club</label>
+                    <select asp-for="ClubId"
+                            asp-items="ViewBag.Clubs"
+                            class="form-select"
+                            id="clubSelect">
+                        <option value="0">-- Select Club --</option>
+                    </select>
+                    <span asp-validation-for="ClubId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="AgeGroupId" class="form-label">
+                        Age Group
+                    </label>
+                    <select asp-for="AgeGroupId"
+                            asp-items="ViewBag.AgeGroups"
+                            class="form-select">
+                        <option value="0">-- Select Age Group --</option>
+                    </select>
+                    <span asp-validation-for="AgeGroupId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CoachId" class="form-label">
+                        Coach (Optional)
+                    </label>
+                    <select asp-for="CoachId"
+                            asp-items="ViewBag.Coaches"
+                            class="form-select"
+                            id="coachSelect">
+                        <option value="">-- No Coach --</option>
+                    </select>
+                    <span asp-validation-for="CoachId"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    Save Changes
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById("clubSelect")
+            .addEventListener("change", async function () {
+
+                const clubId = this.value;
+                const coachSelect =
+                    document.getElementById("coachSelect");
+
+                coachSelect.innerHTML =
+                    '<option value="">-- No Coach --</option>';
+
+                if (!clubId || clubId === "0") return;
+
+                try {
+                    const response = await fetch(
+                        '@Url.Action("CoachesByClub", "Teams")'
+                        + '?clubId=' + encodeURIComponent(clubId)
+                    );
+
+                    if (!response.ok) throw new Error("Request failed");
+
+                    const coaches = await response.json();
+
+                    coaches.forEach(coach => {
+                        coachSelect.add(
+                            new Option(coach.name, coach.id)
+                        );
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+    </script>
+}

@@ -1,0 +1,66 @@
+
+@model Football.Models.Team
+
+@{
+    ViewData["Title"] = "Delete Team";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-5 text-center">
+
+                    <div class="bg-danger bg-opacity-10
+                                text-danger rounded-circle
+                                d-inline-flex align-items-center
+                                justify-content-center mb-4"
+                         style="width:80px;height:80px;">
+                        <i class="bi bi-trash3 fs-1"></i>
+                    </div>
+
+                    <h3 class="fw-bold">Delete Team?</h3>
+
+                    <p class="text-muted">
+                        Are you sure you want to delete this team?
+                        This action cannot be undone.
+                    </p>
+
+                    <div class="bg-light rounded-4 p-4 my-4 text-start">
+                        <p><strong>Team:</strong> @Model.Name</p>
+                        <p>
+                            <strong>Age Group:</strong>
+                            @(Model.AgeGroup?.Name ?? "Unknown")
+                        </p>
+                        <p class="mb-0">
+                            <strong>Coach:</strong>
+                            @(Model.Coach?.Name ?? "Not Assigned")
+                        </p>
+                    </div>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@Model.Id"
+                          method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary border px-4"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-danger px-4">
+                                <i class="bi bi-trash me-2"></i>
+                                Delete Team
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

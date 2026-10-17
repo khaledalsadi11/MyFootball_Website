@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+
+@inject SignInManager<Football.Data.ApplicationUser> SignInManager
+@inject UserManager<Football.Data.ApplicationUser> UserManager
+
+<ul class="app-account-list">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li>
+            <a class="app-account-profile"
+               asp-area="Identity"
+               asp-page="/Account/Manage/Index">
+                <span class="app-account-avatar"><i class="bi bi-person" aria-hidden="true"></i></span>
+                <span class="app-account-user"><small>YOUR ACCOUNT</small><span>@UserManager.GetUserName(User)</span></span>
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </a>
+        </li>
+
+        <li>
+            <form asp-area="Identity"
+                  asp-page="/Account/Logout"
+                  asp-route-returnUrl="@Url.Page("/Account/Login", new { area = "Identity" })"
+                  method="post">
+                <button type="submit" class="app-account-button app-account-secondary">
+                    <i class="bi bi-box-arrow-left" aria-hidden="true"></i> تسجيل الخروج
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="app-account-intro"><span>YOUR ACCOUNT</span></li>
+        <li>
+            <a class="app-account-button app-account-primary"
+               asp-area="Identity"
+               asp-page="/Account/Register">
+                <i class="bi bi-person-plus" aria-hidden="true"></i> إنشاء حساب
+            </a>
+        </li>
+
+        <li>
+            <a class="app-account-button app-account-secondary"
+               asp-area="Identity"
+               asp-page="/Account/Login">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> تسجيل الدخول
+            </a>
+        </li>
+    }
+</ul>

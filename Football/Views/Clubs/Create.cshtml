@@ -1,51 +1,96 @@
 ﻿
-@model Club;
+@model Football.Models.Club
 
-<form method="post" >
+@{
+    ViewData["Title"] = "Add Club";
+}
 
-    @* <div asp-validation-summary="All"></div> *@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
 
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
+                <div class="p-4 text-white"
+                     style="background:linear-gradient(110deg,#071d3a,#12549a)">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white bg-opacity-25 rounded-3 p-3">
+                            <i class="bi bi-shield-plus fs-3"></i>
+                        </div>
+                        <div>
+                            <h3 class="fw-bold mb-1">Add New Club</h3>
+                            <p class="mb-0 text-white-50">
+                                Create a new football club
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="border p-3 mt-4">
+                <div class="card-body p-4 p-md-5">
 
-        <div>
-            <h2>
-                Add Club
-            </h2>
+                    <form asp-controller="Clubs"
+                          asp-action="Create"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="All"
+                             class="text-danger mb-3"></div>
+
+                        <!-- Club Name -->
+                        <div class="mb-4">
+                            <label asp-for="Name"
+                                   class="form-label fw-semibold">
+                                Club Name
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-shield-fill text-primary"></i>
+                                </span>
+
+                                <input asp-for="Name"
+                                       class="form-control"
+                                       placeholder="e.g. Manchester City"
+                                       required />
+                            </div>
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Information -->
+                        <div class="alert alert-primary border-0 rounded-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            You can add players and teams to this club after creating it.
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Actions -->
+                        <div class="d-flex justify-content-between gap-2">
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Back
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Create Club
+                            </button>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
         </div>
-       <hr>
-
-        <div class="mb-3">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-
-        </div>
-        <div class="mb-3">
-            <label asp-for="LeagueId" class="form-label">League</label>
-
-            <select asp-for="LeagueId" class="form-select" asp-items="ViewBag.LeagueList"></select>
-               
-           
-
-
-            <span asp-validation-for="LeagueId" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="CreatedOn"></label>
-            <input asp-for="CreatedOn" class="form-control" />
-            <span asp-validation-for="CreatedOn" class="text-danger"></span>
-
-        </div>
-    
-
-        <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
-        <a asp-action="Index" asp-controller="Clubs" class="btn btn-primary" style="width:150px">Back To Clubs</a>
-
     </div>
-</form>
-@section Scripts
-{
+</div>
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

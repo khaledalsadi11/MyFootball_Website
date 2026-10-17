@@ -1,0 +1,53 @@
+@model Football.Models.TrainingSession
+@using Football.Models
+@{
+    ViewData["Title"] = "Attendance Records";
+    var records = Model.Attendances.OrderBy(a => a.Player?.Name).ToList();
+}
+<div class="container py-4 py-lg-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div><span class="section-label">ATTENDANCE RECORDS</span><h2 class="fw-bold mt-2 mb-1">@Model.Title</h2><p class="text-muted mb-0">@(Model.Team?.Name ?? "Team") · @Model.StartTime.ToString("dd MMM yyyy") · @records.Count record(s)</p></div>
+        <div class="d-flex gap-2 flex-wrap">
+            @if (records.Count > 0)
+            {
+                <a asp-action="DeleteAll" asp-route-sessionId="@Model.Id" class="btn btn-outline-danger"><i class="bi bi-trash me-2" aria-hidden="true"></i>Delete all records</a>
+            }
+            <a asp-action="Create" asp-route-sessionId="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil me-2" aria-hidden="true"></i>Record / Edit</a>
+            <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>All sessions</a>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+            @if (records.Count > 0)
+            {
+                <div class="table-responsive academy-table-wrap">
+                    <table class="table table-hover align-middle mb-0 academy-table">
+                        <caption class="visually-hidden">Attendance records for @Model.Title</caption>
+                        <thead class="table-light"><tr><th scope="col">Player</th><th scope="col">Status</th><th scope="col">Notes</th><th scope="col" class="text-center">Actions</th></tr></thead>
+                        <tbody>
+                            @foreach (var record in records)
+                            {
+                                var statusColor = record.Status switch { AttendanceStatus.Present => "success", AttendanceStatus.Absent => "danger", AttendanceStatus.Late => "warning", _ => "secondary" };
+                                <tr>
+                                    <td class="fw-semibold">@(record.Player?.Name ?? "Unknown player")</td>
+                                    <td><span class="badge bg-@statusColor bg-opacity-10 text-@statusColor">@record.Status</span></td>
+                                    <td>@(string.IsNullOrWhiteSpace(record.Notes) ? "—" : record.Notes)</td>
+                                    <td><div class="d-flex justify-content-center gap-2">
+                                        <a asp-action="Details" asp-route-id="@record.Id" class="btn btn-sm btn-outline-secondary app-row-action" title="Details" aria-label="View attendance details"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                        <a asp-action="Edit" asp-route-id="@record.Id" class="btn btn-sm btn-outline-primary app-row-action" title="Edit" aria-label="Edit attendance record"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                        <a asp-action="Delete" asp-route-id="@record.Id" class="btn btn-sm btn-outline-danger app-row-action" title="Delete" aria-label="Delete attendance record"><i class="bi bi-trash" aria-hidden="true"></i></a>
+                                    </div></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <p class="small text-muted mt-4 mb-0"><i class="bi bi-info-circle me-1" aria-hidden="true"></i>Deleting a record removes it from this session only. The player and training session are kept.</p>
+            }
+            else
+            {
+                <div class="text-center py-5"><i class="bi bi-clipboard-check display-5 text-primary" aria-hidden="true"></i><h4 class="mt-3">No attendance records</h4><p class="text-muted">There are no saved attendance records for this session.</p><a asp-controller="TrainingSessions" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary"><i class="bi bi-calendar-event me-2" aria-hidden="true"></i>View training session</a></div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+
+@model Football.Models.Player
+
+@{
+    ViewData["Title"] = "Delete Player";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <h3 class="text-danger fw-bold">Delete Player</h3>
+
+            <p class="mt-3">
+                Are you sure you want to delete
+                <strong>@Model.Name</strong>?
+            </p>
+
+            <div class="alert alert-warning">
+                Players with attendance records cannot be deleted.
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-4">Club</dt>
+                <dd class="col-sm-8">@(Model.Club?.Name ?? "-")</dd>
+
+                <dt class="col-sm-4">Team</dt>
+                <dd class="col-sm-8">@(Model.Team?.Name ?? "-")</dd>
+            </dl>
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2" aria-hidden="true"></i>
+                    Confirm Delete
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

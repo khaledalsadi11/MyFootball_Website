@@ -1,0 +1,112 @@
+@model Football.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Academy Dashboard";
+    var cards = new[]
+    {
+        new { Label = "Clubs", Count = Model.ClubCount, Icon = "bi-shield-fill", Controller = "Clubs" },
+        new { Label = "Players", Count = Model.PlayerCount, Icon = "bi-people-fill", Controller = "Players" },
+        new { Label = "Coaches", Count = Model.CoachCount, Icon = "bi-person-badge", Controller = "Coaches" },
+        new { Label = "Teams", Count = Model.TeamCount, Icon = "bi-diagram-3-fill", Controller = "Teams" },
+        new { Label = "Age groups", Count = Model.AgeGroupCount, Icon = "bi-collection-fill", Controller = "AgeGroups" },
+        new { Label = "Training sessions", Count = Model.TrainingSessionCount, Icon = "bi-calendar-event", Controller = "TrainingSessions" },
+        new { Label = "Attendance records", Count = Model.AttendanceRecordCount, Icon = "bi-check2-square", Controller = "Attendances" }
+    };
+}
+
+
+<div class="container py-4 py-lg-5" style="color:#143e2e">
+    <header class="p-4 p-lg-5 mb-4 rounded-4 shadow-sm text-white" style="background:linear-gradient(110deg,#143e2e,#237652)">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <span class="small fw-bold"><i class="bi bi-shield-fill me-2" aria-hidden="true"></i>FOOTBALL ACADEMY</span>
+                <h1 class="fw-bold mt-3 mb-2">Academy Dashboard</h1>
+                <p class="mb-0 text-white">Your players, teams and training, in one place.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a class="btn btn-light fw-semibold px-4 py-2" asp-controller="TrainingSessions" asp-action="Index">
+                    <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>Manage training
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section aria-labelledby="overview-heading" class="mb-4">
+        <h2 id="overview-heading" class="h5 fw-bold mb-3">Academy overview</h2>
+        <div class="row g-3">
+            @foreach (var card in cards)
+            {
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <a asp-controller="@card.Controller" asp-action="Index" class="card border-0 shadow-sm rounded-4 h-100 text-decoration-none" style="color:#143e2e">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div>
+                                    <div class="text-muted small mb-2">@card.Label</div>
+                                    <div class="h2 fw-bold mb-0">@card.Count.ToString("N0")</div>
+                                </div>
+                                <span class="d-inline-flex align-items-center justify-content-center flex-shrink-0 rounded-3 bg-light p-3 fs-4" style="color:#237652"><i class="bi @card.Icon" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="small fw-semibold mt-3" style="color:#237652">View all <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+
+    <div class="row g-4">
+        <section class="col-lg-8" aria-labelledby="sessions-heading">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+                        <h2 id="sessions-heading" class="h5 fw-bold mb-0">Upcoming training</h2>
+                        <a class="small fw-semibold" style="color:#237652" asp-controller="TrainingSessions" asp-action="Index">All sessions <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                    @if (Model.UpcomingSessions.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <caption class="visually-hidden">Next five dated sessions, including today</caption>
+                                <thead><tr><th scope="col">Session</th><th scope="col">Date</th></tr></thead>
+                                <tbody>
+                                    @foreach (var session in Model.UpcomingSessions)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">@session.Title</td>
+                                            <td class="text-nowrap">@(session.Date?.ToString("dd MMM yyyy") ?? "Date unavailable")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="bg-light rounded-3 text-center py-4">
+                            <i class="bi bi-calendar2-week fs-1" aria-hidden="true"></i>
+                            <p class="fw-semibold mt-3 mb-1">No upcoming dated sessions to display</p>
+                            <p class="small text-muted mb-0">Open training sessions to review your schedule.</p>
+                        </div>
+                    }
+                    @if (Model.UndatedSessionCount > 0)
+                    {
+                        <p class="small text-muted mt-3 mb-0"><i class="bi bi-info-circle me-1" aria-hidden="true"></i>@Model.UndatedSessionCount session(s) have no date available for this overview.</p>
+                    }
+                </div>
+            </div>
+        </section>
+        <section class="col-lg-4" aria-labelledby="actions-heading">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h2 id="actions-heading" class="h5 fw-bold mb-4">Quick actions</h2>
+                    <div class="d-grid gap-3">
+                        <a class="btn btn-primary py-3 text-start" style="--bs-btn-bg:#237652;--bs-btn-border-color:#237652;--bs-btn-hover-bg:#143e2e;--bs-btn-hover-border-color:#143e2e;--bs-btn-active-bg:#143e2e;--bs-btn-active-border-color:#143e2e" asp-controller="Players" asp-action="Create"><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Add a player</a>
+                        <a class="btn btn-outline-primary py-3 text-start" style="--bs-btn-color:#237652;--bs-btn-border-color:#237652;--bs-btn-hover-bg:#237652;--bs-btn-hover-border-color:#237652;--bs-btn-active-bg:#143e2e;--bs-btn-active-border-color:#143e2e" asp-controller="Teams" asp-action="Create"><i class="bi bi-diagram-3 me-2" aria-hidden="true"></i>Create a team</a>
+                        <a class="btn btn-outline-primary py-3 text-start" style="--bs-btn-color:#237652;--bs-btn-border-color:#237652;--bs-btn-hover-bg:#237652;--bs-btn-hover-border-color:#237652;--bs-btn-active-bg:#143e2e;--bs-btn-active-border-color:#143e2e" asp-controller="TrainingSessions" asp-action="Create"><i class="bi bi-calendar-plus me-2" aria-hidden="true"></i>Schedule training</a>
+                        <a class="btn btn-outline-primary py-3 text-start" style="--bs-btn-color:#237652;--bs-btn-border-color:#237652;--bs-btn-hover-bg:#237652;--bs-btn-hover-border-color:#237652;--bs-btn-active-bg:#143e2e;--bs-btn-active-border-color:#143e2e" asp-controller="Attendances" asp-action="Index"><i class="bi bi-check2-square me-2" aria-hidden="true"></i>Manage attendance</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+

@@ -1,0 +1,86 @@
+/* One table system for academy directories, details and attendance forms. */
+.app-body .academy-table-wrap {
+    border: 1px solid #deebe1 !important;
+    border-radius: 14px !important;
+    background: #fff;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #abcdb5 #f3f8f4;
+    overscroll-behavior-x: contain;
+}
+.app-body .academy-table {
+    --bs-table-bg: #fff;
+    --bs-table-color: #355342;
+    --bs-table-border-color: #eaf0eb;
+    --bs-table-hover-bg: #edf6ef;
+    --bs-table-hover-color: #174b30;
+    width: 100%;
+    margin-bottom: 0;
+    border: 0;
+    font-size: 14px;
+    line-height: 1.55;
+}
+.app-body .academy-table > thead > tr > th {
+    --bs-table-bg: #194d36;
+    --bs-table-color: #e4f2e8;
+    --bs-table-accent-bg: transparent;
+    background: #194d36;
+    color: #e4f2e8;
+    border: 0;
+    border-bottom: 3px solid #9dd6af;
+    border-radius: 0;
+    padding: 17px 20px !important;
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: 1.05px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+    box-shadow: none;
+}
+.app-body .academy-table > tbody > tr > td {
+    background-color: #fff;
+    padding: 18px 20px !important;
+    border-bottom: 1px solid #e8f0e9;
+    vertical-align: middle;
+    color: #496250;
+    box-shadow: none;
+    transition: background-color .16s ease;
+}
+.app-body .academy-table > tbody > tr:nth-child(even) > td { background-color: #f8fbf8; }
+.app-body .academy-table > tbody > tr:last-child > td { border-bottom: 0; }
+.app-body .academy-table > tbody > tr:hover > td,
+.app-body .academy-table > tbody > tr:focus-within > td { background-color: #edf6ef; }
+.app-body .academy-table > tbody > tr > td:first-child { color: #234b32; font-weight: 550; }
+.app-body .academy-table .fw-bold,
+.app-body .academy-table .fw-semibold,
+.app-body .academy-table .club-name { color: #254e35; }
+.app-body .academy-table .club-avatar { width: 38px; height: 38px; border-radius: 11px; background: #e6f2e8; color: #367e50; font-size: 18px; }
+.app-body .academy-table small { font-size: 11px; color: #829186; }
+.app-body .academy-table .badge { font-size: 10px; font-weight: 600; letter-spacing: .15px; padding: 6px 10px !important; border-radius: 7px !important; line-height: 1.3; }
+.app-body .academy-table .league-badge { background: #e8f3eb; color: #39734b; border: 1px solid #dceade; font-size: 11px; border-radius: 7px; padding: 5px 10px; }
+.app-body .academy-table td:has(.app-row-action) { min-width: 146px; }
+.app-body .academy-table .app-row-action { background-color: #fff; width: 34px; height: 34px; min-height: 34px; border-radius: 9px !important; transition: background-color .16s, border-color .16s, color .16s; }
+.app-body .academy-table .btn-outline-secondary { --bs-btn-color: #718577; --bs-btn-border-color: #d9e5dc; --bs-btn-hover-bg: #e7f0e9; --bs-btn-hover-border-color: #a8c5b0; --bs-btn-hover-color: #214f32; }
+.app-body .academy-table .btn-outline-primary { --bs-btn-border-color: #b7d8c2 !important; }
+.app-body .academy-table .btn-outline-danger { --bs-btn-border-color: #eed2d2; --bs-btn-color: #bc5252; --bs-btn-hover-bg: #bc5252; --bs-btn-hover-border-color: #bc5252; }
+.app-body .academy-table .app-row-action:hover,
+.app-body .academy-table .app-row-action:focus-visible { background-color: var(--bs-btn-hover-bg); color: var(--bs-btn-hover-color); }
+.app-body .academy-table .form-control,
+.app-body .academy-table .form-select { min-height: 40px; border: 1px solid #d9e7dc; background-color: #fff; border-radius: 9px; font-size: 12px; }
+.app-body .academy-table .form-select { min-width: 130px; }
+.app-body .academy-table input:not([type="hidden"]) { min-width: 170px; }
+.app-body .academy-table .form-control:focus,
+.app-body .academy-table .form-select:focus { border-color: #74aa87; box-shadow: 0 0 0 3px #23765216; }
+.app-body .clubs-table-card { border-color: #e1eae2; box-shadow: 0 6px 24px #244b2e06; border-radius: 18px; }
+.app-body .clubs-page > .container { max-width: 100%; padding-inline: clamp(20px, 3vw, 48px); }
+.app-body .table-bottom { color: #7b8d7f; font-size: 12px; padding-top: 19px; }
+@media (max-width: 767.98px) {
+    .app-body .academy-table > thead > tr > th { padding: 14px 16px !important; font-size: 10px; }
+    .app-body .academy-table > tbody > tr > td { padding: 15px 16px !important; font-size: 13px; }
+    .app-body .academy-table-wrap { border-radius: 11px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .app-body .academy-table > tbody > tr > td,
+    .app-body .academy-table .app-row-action { transition: none; }
+}

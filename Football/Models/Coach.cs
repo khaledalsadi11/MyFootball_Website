@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace Football.Models
 {
@@ -8,18 +7,20 @@ namespace Football.Models
     {
         public int Id { get; set; }
 
-        public int ShirtNumber { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        public string Name { get; set; } = string.Empty;
 
-        public string Name { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a club")]
+        public int ClubId { get; set; }
 
+        public Club? Club { get; set; }
 
-        public int ClubId { get; set; }          // FK
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a nationality")]
+        public int NationalityId { get; set; }
 
-        public Club Club { get; set; }
+        public Nationality? Nationality { get; set; }
 
-        public int NationalityId { get; set; }   // FK
-
-
-        public Nationality Nationality { get; set; }
+        public ICollection<Team> Teams { get; set; } = new List<Team>();
     }
 }

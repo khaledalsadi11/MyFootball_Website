@@ -1,0 +1,157 @@
+
+@model IEnumerable<Football.Models.Team>
+
+@{
+    ViewData["Title"] = "Teams Management";
+    var teams = Model.ToList();
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center
+                flex-wrap gap-3 mb-4">
+        <div>
+            <span class="text-primary fw-semibold small">
+                FOOTBALL ACADEMY / MANAGEMENT
+            </span>
+            <h2 class="fw-bold mt-2">Academy Teams</h2>
+            <p class="text-muted mb-0">
+                Manage teams, coaches and age categories.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary rounded-3 px-4 py-2 shadow-sm">
+            <i class="bi bi-plus-circle me-2"></i>
+            Create Team
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-2">Total Teams</p>
+                            <h2 class="fw-bold">@teams.Count</h2>
+                        </div>
+                        <i class="bi bi-shield-fill-check fs-2 text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <p class="text-muted mb-2">Assigned Coaches</p>
+                    <h2 class="fw-bold">
+                        @teams.Count(x => x.CoachId.HasValue)
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <p class="text-muted mb-2">Age Categories</p>
+                    <h2 class="fw-bold">
+                        @teams.Select(x => x.AgeGroupId).Distinct().Count()
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["s"] != null)
+    {
+        <div class="alert alert-success rounded-3">
+            @TempData["s"]
+        </div>
+    }
+
+    @if (TempData["errorData"] != null)
+    {
+        <div class="alert alert-danger rounded-3">
+            @TempData["errorData"]
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-4 border-bottom">
+            <h5 class="fw-bold mb-1">Teams Directory</h5>
+            <p class="text-muted small mb-0">
+                All registered academy teams.
+            </p>
+        </div>
+
+        <div class="table-responsive academy-table-wrap">
+            <table class="table table-hover align-middle mb-0 academy-table">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="ps-4 py-3">Team</th>
+                        <th scope="col">Age Group</th>
+                        <th scope="col">Coach</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var team in teams)
+                    {
+                        <tr>
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-primary bg-opacity-10
+                                                text-primary rounded-3 p-3">
+                                        <i class="bi bi-shield-fill"></i>
+                                    </div>
+                                    <strong>@team.Name</strong>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-primary bg-opacity-10
+                                             text-primary rounded-pill px-3 py-2">
+                                    @(team.AgeGroup?.Name ?? "Unknown")
+                                </span>
+                            </td>
+
+                            <td>
+                                @(team.Coach?.Name ?? "Not Assigned")
+                            </td>
+
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="Details"
+                                       asp-route-id="@team.Id"
+                                       class="btn btn-sm btn-outline-secondary app-row-action" title="Details" aria-label="Details"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                    <a asp-action="Edit"
+                                       asp-route-id="@team.Id"
+                                       class="btn btn-sm btn-outline-primary app-row-action" title="Edit" aria-label="Edit"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                    <a asp-action="Delete"
+                                       asp-route-id="@team.Id"
+                                       class="btn btn-sm btn-outline-danger app-row-action" title="Delete" aria-label="Delete"><i class="bi bi-trash" aria-hidden="true"></i></a>
+</div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (!teams.Any())
+        {
+            <div class="text-center p-5">
+                <i class="bi bi-shield fs-1 text-muted"></i>
+                <h5 class="fw-bold mt-3">No Teams Yet</h5>
+                <p class="text-muted">Create your first academy team.</p>
+                <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+                    Create Team
+                </a>
+            </div>
+        }
+    </div>
+</div>

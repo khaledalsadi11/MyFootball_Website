@@ -1,0 +1,32 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+<div class="account-section-heading"><span class="account-section-icon"><i class="bi bi-person" aria-hidden="true"></i></span><div><h3>Personal profile</h3><p>Keep your contact details up to date.</p></div></div>
+<partial name="_StatusMessage" for="StatusMessage" />
+<form id="profile-form" method="post" class="account-profile-form">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="account-field">
+        <label asp-for="Username">Username</label>
+        <div class="account-input-icon"><i class="bi bi-person" aria-hidden="true"></i><input asp-for="Username" class="form-control" disabled aria-describedby="username-help" /></div>
+        <small id="username-help">Your username identifies your academy account.</small>
+    </div>
+    <div class="account-field">
+        <div class="account-label-row"><label asp-for="Email">Email address</label><span class="account-email-status @(Model.IsEmailConfirmed ? "verified" : "pending")"><i class="bi @(Model.IsEmailConfirmed ? "bi-patch-check" : "bi-clock")" aria-hidden="true"></i>@(Model.IsEmailConfirmed ? "Verified" : "Not verified")</span></div>
+        <div class="account-input-icon"><i class="bi bi-envelope" aria-hidden="true"></i><input asp-for="Email" class="form-control" disabled /></div>
+        <a class="account-field-link" asp-page="./Email">Manage email address<i class="bi bi-arrow-up-right ms-1" aria-hidden="true"></i></a>
+    </div>
+    <div class="account-field">
+        <label asp-for="Input.PhoneNumber">Phone number</label>
+        <div class="account-input-icon"><i class="bi bi-telephone" aria-hidden="true"></i><input asp-for="Input.PhoneNumber" class="form-control" type="tel" autocomplete="tel" placeholder="Add your phone number" /></div>
+        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+        <small>Keep a contact number on your profile.</small>
+    </div>
+    <div class="account-save-row"><span><i class="bi bi-shield-check" aria-hidden="true"></i>Your details stay with your account.</span><button id="update-profile-button" type="submit" class="btn btn-primary"><i class="bi bi-check2 me-2" aria-hidden="true"></i>Save changes</button></div>
+</form>
+<div class="account-security-note"><span class="account-security-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span><div><strong>A stronger defence for your account</strong><p>Add an extra layer of protection with two-factor authentication.</p><a asp-page="./TwoFactorAuthentication">Review security<i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a></div></div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,30 @@
+@{
+    Layout = ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null
+        ? parentLayout.ToString() : "/Views/Shared/_Layout.cshtml";
+    var accountName = User.Identity?.Name ?? "Academy member";
+    var accountInitial = string.IsNullOrWhiteSpace(accountName) ? "F" : accountName.Substring(0, 1).ToUpperInvariant();
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+}
+<div class="container account-page">
+    <header class="account-page-header">
+        <div><span class="account-eyebrow">YOUR PERSONAL SPACE</span><h1>Account settings<span>.</span></h1><p>Your profile, preferences and security. All in one place.</p></div>
+        <a class="account-dashboard-link" asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-arrow-left" aria-hidden="true"></i>Back to dashboard</a>
+    </header>
+    <div class="account-cover">
+        <div class="account-avatar" aria-hidden="true">@accountInitial</div>
+        <div class="account-cover-name"><span>FOOTBALL / ACADEMY MEMBER</span><h2>@accountName</h2><p><i class="bi bi-person-check" aria-hidden="true"></i>Your academy account</p></div>
+        <span class="account-cover-symbol" aria-hidden="true"><img src="~/images/football-mark.svg" alt="" width="90" height="100" /></span>
+    </div>
+    <div class="account-grid">
+        <aside class="account-settings-nav" aria-label="Account settings"><p>MANAGE ACCOUNT</p><partial name="_ManageNav" /></aside>
+        <section class="account-content" aria-label="@ViewData["Title"]">
+            @RenderBody()
+        </section>
+    </div>
+</div>
+@section Scripts {
+    @await RenderSectionAsync("Scripts", required: false)
+}

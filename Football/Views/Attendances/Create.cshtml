@@ -1,0 +1,113 @@
+@model Football.ViewModels.AttendanceFormViewModel
+@using Football.Models
+
+@{
+    ViewData["Title"] = "Record Attendance";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Record Attendance</h2>
+            <p class="text-muted mb-0">
+                @Model.SessionTitle — @Model.TeamName
+            </p>
+        </div>
+
+        <a asp-controller="TrainingSessions"
+           asp-action="Details"
+           asp-route-id="@Model.TrainingSessionId"
+           class="btn btn-outline-secondary"><i class="bi bi-eye me-2" aria-hidden="true"></i>
+            Back
+        </a>
+    </div>
+
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="TrainingSessionId" type="hidden" />
+
+        <div asp-validation-summary="All"
+             class="text-danger mb-3"></div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <div class="table-responsive academy-table-wrap">
+                    <table class="table table-hover align-middle academy-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Shirt #</th>
+                                <th scope="col">Player</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Notes</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (int i = 0; i < Model.Players.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model.Players[i].ShirtNumber
+                                    </td>
+
+                                    <td>
+                                        <strong>@Model.Players[i].PlayerName</strong>
+
+                                        <input asp-for="Players[i].PlayerId"
+                                               type="hidden" />
+                                    </td>
+
+                                    <td>
+                                        <select asp-for="Players[i].Status"
+                                                asp-items="Html.GetEnumSelectList<AttendanceStatus>()"
+                                                class="form-select">
+                                        </select>
+                                        <span asp-validation-for="Players[i].Status"
+                                              class="text-danger"></span>
+                                    </td>
+
+                                    <td>
+                                        <input asp-for="Players[i].Notes"
+                                               class="form-control"
+                                               placeholder="Optional note" />
+                                        <span asp-validation-for="Players[i].Notes"
+                                              class="text-danger"></span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @if (!Model.Players.Any())
+                {
+                    <div class="alert alert-info">
+                        This team has no players yet.
+                    </div>
+                }
+
+                <div class="d-flex gap-2 mt-3">
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@(!Model.Players.Any())"><i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                        Save Attendance
+                    </button>
+
+                    <a asp-controller="TrainingSessions"
+                       asp-action="Details"
+                       asp-route-id="@Model.TrainingSessionId"
+                       class="btn btn-outline-secondary"><i class="bi bi-eye me-2" aria-hidden="true"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

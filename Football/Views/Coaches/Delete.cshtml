@@ -1,0 +1,95 @@
+
+@model Football.Models.Coach
+
+@{
+    ViewData["Title"] = "Delete Coach";
+    var hasTeams = Model.Teams.Any();
+}
+
+<div class="container py-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <h3 class="text-danger fw-bold mb-3">
+                Delete Coach
+            </h3>
+
+            <p>
+                Are you sure you want to delete
+                <strong>@Model.Name</strong>?
+            </p>
+
+            <div class="alert alert-warning">
+
+                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                Coaches assigned to teams cannot be deleted.
+            </div>
+
+            <dl class="row">
+
+                <!-- Club -->
+                <dt class="col-sm-4">
+                    Club
+                </dt>
+
+                <dd class="col-sm-8">
+                    @(Model.Club?.Name ?? "-")
+                </dd>
+
+                <!-- Nationality -->
+                <dt class="col-sm-4">Teams</dt>
+                <dd class="col-sm-8">
+                    @if (hasTeams)
+                    {
+                        <ul class="mb-0">
+                            @foreach (var team in Model.Teams)
+                            {
+                                <li>@team.Name</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Not assigned to any team</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">
+                    Nationality
+                </dt>
+
+                <dd class="col-sm-8">
+                    @(Model.Nationality?.Country ?? "-")
+                </dd>
+
+            </dl>
+
+            <form asp-controller="Coaches"
+                  asp-action="Delete"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bi bi-trash me-1"></i>
+                        Confirm Delete
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,102 @@
+
+@model Football.Models.Team
+
+@{
+    ViewData["Title"] = "Team Details";
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">@Model.Name</h2>
+            <p class="text-muted mb-0">Team Overview</p>
+        </div>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-primary px-4">
+            <i class="bi bi-pencil me-2"></i>Edit Team
+        </a>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <p class="text-muted">Age Group</p>
+                    <h5 class="fw-bold">
+                        @(Model.AgeGroup?.Name ?? "Unknown")
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <p class="text-muted">Head Coach</p>
+                    <h5 class="fw-bold">
+                        @(Model.Coach?.Name ?? "Not Assigned")
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <p class="text-muted">Total Players</p>
+                    <h5 class="fw-bold">@Model.Players.Count</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white p-4">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-people me-2"></i>
+                Team Players
+            </h5>
+        </div>
+
+        <div class="table-responsive academy-table-wrap">
+            <table class="table table-hover align-middle mb-0 academy-table">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="ps-4">Player</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Shirt Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in Model.Players)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-semibold">@player.Name</td>
+                            <td>@player.Position</td>
+                            <td>
+                                <span class="badge bg-primary">
+                                    #@player.ShirtNumber
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (!Model.Players.Any())
+        {
+            <div class="text-center p-5 text-muted">
+                No players assigned to this team.
+            </div>
+        }
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary mt-4">
+        <i class="bi bi-arrow-left me-2"></i>Back
+    </a>
+</div>
